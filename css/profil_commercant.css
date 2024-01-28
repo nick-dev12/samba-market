@@ -1,0 +1,86 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    list-style: none;
+}
+
+body{
+    font-family: 'Almarai', sans-serif;
+    /* font-family: 'Rozha One', serif; */
+}
+
+.box_containe{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+}
+.box_containe form{
+    margin: 40px;
+    width: 70%;
+    background-color: #2C3E50;
+    padding: 30px 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+.box_containe form .box{
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+}
+.box_containe form .box input{
+   width: 300px;
+   padding: 6px;
+   border-radius: 7px;
+   outline: none;
+   font-size: 17px;
+   transition: all 0.4s ease-in-out;
+}
+
+.box_containe form .box input:hover{
+    border: 2px solid rgb(255, 255, 255);
+    background-color: rgb(232, 244, 248);
+    outline: #2C3E50;
+    box-shadow: 1px 2px 7px  rgb(255, 255, 255);;
+}
+.box_containe form .box select{
+    width: 300px;
+    padding: 6px;
+    border-radius: 7px;
+    outline: none;
+    font-size: 17px;
+   transition: all 0.4s ease-in-out;
+
+ }
+ .box_containe form .box select:hover{
+    border: 2px solid rgb(255, 255, 255);
+    background-color: rgb(232, 244, 248);
+    outline: #2C3E50;
+    box-shadow: 1px 2px 7px  rgb(255, 255, 255);;
+}
+.box_containe form .box label{
+    color: rgb(255, 255, 255);
+    font-size: 15px;
+    margin-bottom: 5px;
+}
+.box_containe form .box1{
+
+}
+
+.box_containe  .button{
+    margin: 20px;
+    padding: 5px 13px;
+    font-size: 15px;
+    border-radius: 8px;
+    background-color: rgb(0, 110, 255);
+    color: #ffffff;
+    letter-spacing: 1px;
+    transition: all 0.1s ;
+    border: none;
+}
