@@ -4,7 +4,7 @@
 
 .info{
     height: 30px;
-    background-color: #2C3E50;
+    background-color: #000000;
     color: white;
     display: flex;
     align-items: center;
@@ -32,15 +32,13 @@
 }
 
 nav{
-    height: 80px;
+    height: 70px;
     display: flex;
     align-items: center;
     justify-content: space-around;
     list-style: none;
     text-decoration: none;
 }
-
-
 
 nav .logo img {
     display: block;
@@ -75,23 +73,23 @@ nav .container form {
     justify-content: center;
 }
 nav .container form #search{
-    height: 40px;
-    width: 400px;
+    height: 35px;
+    width: 350px;
     border-top-left-radius: 15px;
     border-bottom-left-radius: 15px;
-    border: 1px solid rgba(130, 125, 125, 0.652);
-    padding:0 20px;
-    font-size: 18px;
+    border: 2px solid rgba(193, 193, 193, 0.652);
+    padding:2px 20px;
+    font-size: 15px;
     outline: none;
     transition: all 0.5s;
 }
 nav .container form #search:hover{
-    background-color: #c03a2b11;
-    border:1px solid #C0392B;
+    background-color: #a4f5f511;
+   box-shadow: 0 0 7px 2px #e4144c47;
 }
 nav .container form #search:focus{
-    background-color: #c03a2b0d;
-    border:1px solid #C0392B;
+    background-color: #a4f5f511;
+    box-shadow: 0 0 7px 2px #e4144c47;
 }
 
 nav .container #submit{
@@ -102,7 +100,7 @@ display: flex;
 width: 50px;
 align-items: center;
 justify-content: center;
-height: 40px;
+height: 35px;
 width: 0 10px;
 background-color: #2C3E50;
 display: block;
@@ -111,7 +109,7 @@ border-top-right-radius: 15px;
 border-bottom-right-radius: 15px;
 }
 nav .container form label i {
-font-size: 30px;
+font-size: 20px;
 position: absolute;
 top: 50%;
 transform: translate(-50%,-50%);
@@ -130,19 +128,19 @@ margin:0 50px;
 }
 
 nav .box button {
-padding: 7px 14px;
-font-size: 16px;
+padding: 5px 13px;
+font-size: 15px;
 font-weight: 600;
 text-transform: capitalize;
 border:none ;
-border-radius: 5px;
+border-radius: 7px;
 display: block;
 margin: 0 10px;
 background-color: #95A5A6;
 color: white;
 cursor: pointer;
 transition: all 0.5s ease-in-out;
-background-color: #C0392B;
+background-color: #000000;
 }
 nav .box button:hover{
     background-color: #2C3E50;
@@ -167,10 +165,10 @@ transition: all 0.5s ease-in-out;
 background-color: #000000;
 }
 nav .box .dconn:hover{
-    background-color: #C0392B;
+    background-color: #e4144d;
 }
 nav .box :nth-child(3) button {
-background-color: #C0392B;
+background-color: #e4144d;
 }
 nav .box :nth-child(3) button:hover{
     background-color: #000000;
@@ -221,8 +219,8 @@ nav .container .users img{
 
 
 .section1{
-background-color: #2C3E50;
-height: 50px;
+    background-color: #636363;
+height: 35px;
 display: flex;
 align-items: center;
 justify-content: center;
@@ -239,6 +237,6 @@ font-family: 'Nunito', sans-serif;
 }
 
 .section1 div span i{
-font-size: 35px;
+font-size: 30px;
 color: white;
 }

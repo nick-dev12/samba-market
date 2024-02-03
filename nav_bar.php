@@ -1,11 +1,12 @@
 <link rel="stylesheet" href="../css/nabare.css">
 
-
-
-<div class="info"><span><i class="fa-solid fa-phone fa-2xs"></i>+241 77 12 20 41</span> <span><i
-            class="fa-brands fa-facebook"></i><i class="fa-brands fa-youtube"></i><i class="fa-brands fa-tiktok"></i><i
-            class="fa-brands fa-whatsapp"></i><i class="fa-brands fa-instagram"></i></span> <span><i
-            class="fa-solid fa-envelope fa-2xs"></i>support@Samba-Market.com</span></div>
+<div class="info"><span><i class="fa-solid fa-phone fa-2xs"></i>+241 77 12 20 41</span>
+    <span><i class="fa-brands fa-facebook"></i><i class="fa-brands fa-youtube"></i><i class="fa-brands fa-tiktok"></i><i
+            class="fa-brands fa-whatsapp"></i><i class="fa-brands fa-instagram"></i>
+    </span>
+    <span><i class="fa-solid fa-envelope fa-2xs"></i>support@Samba-Market.com
+    </span>
+</div>
 <nav>
     <a class="logo" href="/index.php"><img src="/image/panier.png" alt=""><span>S</span> <span>amba-market</span></a>
     <div class="container">
@@ -15,11 +16,11 @@
 
             <div class="users">
                 <p>
-                    
-                      <?php  echo $_SESSION['user_info']['nom'];?>
-                    
+
+                    <?php echo $_SESSION['user_info']['nom']; ?>
+
                 </p>
-                
+
                 <img src="/upload/<?= $_SESSION['user_info']['images'] ?>" alt="">
 
                 <div class="box">
