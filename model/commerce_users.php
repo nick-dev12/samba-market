@@ -35,10 +35,8 @@ require_once(__DIR__ . '/../conn/conn.php');
         return $stmt->execute();
     }
 
-
-
     function verifieEmail ($db,$mail){
-      $query = $db->prepare("SELECT * FROM commerce_users WHERE mail = :mail");
+      $query = $db->prepare("SELECT * FROM users WHERE mail = :mail");
       $query->bindParam(':mail', $mail);
       $query->execute();
       
@@ -50,7 +48,6 @@ require_once(__DIR__ . '/../conn/conn.php');
         }
       
       }
-
 
       function getUsers($db, $mail, $phone){
         $sql = "SELECT * FROM users WHERE mail = :mail OR phone = :phone";

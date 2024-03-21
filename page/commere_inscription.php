@@ -8,7 +8,7 @@
 // Déclaration d'un tableau pour stocker les erreurs
 $erreurs = ''; // Initialisez un tableau pour stocker les erreurs
 
-include_once('../controller/controller_commerce_users.php');
+include_once ('../controller/controller_commerce_users.php');
 
 ?>
 
@@ -17,7 +17,7 @@ include_once('../controller/controller_commerce_users.php');
 
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <head>
   <meta charset="UTF-8">
@@ -36,89 +36,89 @@ include_once('../controller/controller_commerce_users.php');
 
 <body>
 
- <?php include('../src/navbare.php') ?>
+  <?php include ('../nav_bar.php') ?>
 
   <section class="section2">
 
     <div class="formulaire1">
-      <img src="/undraw_login_re_4vu2.svg" alt="">
+      <img id="img" src="../image/auth-image.png" alt="">
       <form method="post" action="" enctype="multipart/form-data">
         <h3>Compte commerçants</h3>
-        <?php if (isset($erreurs)): ?>
+        <?php if (isset ($erreurs)): ?>
           <div class="erreur">
             <?php echo $erreurs; ?>
           </div>
         <?php endif; ?>
         <div class="container_box">
-        <div class="container">
-          <div class="box1">
-            <label for="nom">Nom complet</label>
-            <input type="text" name="nom" id="nom">
-          </div>
-
-          <div class="box1">
-            <label for="mail">Adress mail</label>
-            <input type="text" name="mail" id="mail">
-          </div>
-
-          <div class="box1 box2">
-            <label for="phone">N-telephone</label>
-            <input type="number" name="phone" id="phone">
-          </div>
-
-          <div class="box1">
-            <label for="boutique">Nom de votre boutique</label>
-            <input type="text" name="boutique" id="boutique">
-          </div>
-
-          <div class="box1">
-            <label for="ville">Ville</label>
-            <input type="text" name="ville" id="ville">
-          </div>
-        </div>
-
-        <div class="container">
-        <div class="box1">
-            <p>Ajouter une photo de profil</p>
-            <div class="img">
-            <label for="image"><img src="/image/galerie.jpg" alt=""></label>
-            <input type="file" name="images" id="image">
-            <img id="imagePreview" src="" alt="Aperçu image">
+          <div class="container">
+            <div class="box1">
+              <label for="nom">Nom complet</label>
+              <input type="text" name="nom" id="nom">
+            </div>
+            <div class="box1">
+              <label for="boutique">Nom de votre boutique</label>
+              <input type="text" name="boutique" id="boutique">
+            </div>
+            <div class="box1">
+              <label for="mail">Adress mail</label>
+              <input type="text" name="mail" id="mail">
             </div>
 
-            <script>
-              // Récupérer l'élément input type file
-              const inputImage = document.getElementById('image');
+            <div class="box1 box2">
+              <label for="phone">N-telephone</label>
+              <input type="number" name="phone" id="phone">
+            </div>
 
-              // Écouter le changement de fichier sélectionné
-              inputImage.addEventListener('change', () => {
 
-                // Récupérer le premier fichier sélectionné
-                const file = inputImage.files[0];
 
-                // Afficher l'aperçu dans l'élément img
-                const previewImg = document.getElementById('imagePreview');
-                previewImg.src = URL.createObjectURL(file);
-
-              });
-
-            </script>
+            <div class="box1">
+              <label for="ville">Ville</label>
+              <input type="text" name="ville" id="ville">
+            </div>
           </div>
-        <div class="box1">
-          <label for="pass">Mot de passe</label>
-          <input type="password" name="pass" id="pass">
+
+          <div class="container">
+            <div class="box1">
+              <p>Ajouter une photo de profil</p>
+              <div class="img">
+                <label for="image"><img src="/image/galerie.jpg" alt=""></label>
+                <input type="file" name="images" id="image">
+                <img id="imagePreview" src="" alt="Aperçu image">
+              </div>
+
+              <script>
+                // Récupérer l'élément input type file
+                const inputImage = document.getElementById('image');
+
+                // Écouter le changement de fichier sélectionné
+                inputImage.addEventListener('change', () => {
+
+                  // Récupérer le premier fichier sélectionné
+                  const file = inputImage.files[0];
+
+                  // Afficher l'aperçu dans l'élément img
+                  const previewImg = document.getElementById('imagePreview');
+                  previewImg.src = URL.createObjectURL(file);
+
+                });
+
+              </script>
+            </div>
+            <div class="box1">
+              <label for="pass">Mot de passe</label>
+              <input type="password" name="pass" id="pass">
+            </div>
+
+            <div class="box1">
+              <label for="cpass">Confirmation du mot de passe</label>
+              <input type="password" name="cpass" id="cpass">
+            </div>
+
+            <input type="submit" name="valider" value="Inscription" id="valider">
+          </div>
         </div>
 
-        <div class="box1">
-          <label for="cpass">Confirmation du mot de passe</label>
-          <input type="password" name="cpass" id="cpass">
-        </div>
 
-        <input type="submit" name="valider" value="valider" id="valider">
-        </div>
-        </div>
-
-       
       </form>
     </div>
   </section>

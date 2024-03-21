@@ -1,4 +1,4 @@
-@import url('https ://fonts.googleapis.com/css2 ?family=Roboto&display=swap');
+
 
 *{
     margin: 0;
@@ -11,7 +11,6 @@ html {
     /* 1 rem 10px */
   }
 body{
-    font-family: 'Roboto', sans-serif;
   font-size: 1.6rem;
 }
 
@@ -78,7 +77,7 @@ body{
 .slider-area .slider-item button {
     padding: 10px 20px;
     border: none;
-    border-radius: 5px;
+    border-radius: 10px;
     font-size: 18px;
     background-color: #e4144d;
     color: white;
@@ -155,16 +154,17 @@ body{
     border-radius: 20px;
     margin: 0 15px;
 }
-.categorie .item img{
-    height: 140px;
-    width: 140px;
+.categorie .item .img{
+    height: 120px;
+    width: 120px;
     border-radius: 50%;
     object-fit: cover;
 }
 .categorie .item p{
-    font-size: 16px;
+    font-size: 15px;
     margin: 5px 0;
-    font-weight: 600;
+    font-weight: 500;
+    text-align: center;
 }
 .categorie .item span{
     font-size: 13px;
@@ -302,11 +302,11 @@ border-radius: 20px;
   }
   .affiches  .s_box2 .explore a{
     padding: 8px 20px;
-    background-color: #e4144d;
-    color: #ffffff;
+    background-color: #ffffff;
+    color: #000000;
     font-size: 20px;
     margin-top: 30px;
-    border-radius: 10px;
+    border-radius: 2px;
   }
   .affiches  .s_box2 .slider{
     display: flex;
@@ -348,21 +348,18 @@ border-radius: 20px;
     align-items: center;
     justify-content: center;
 }
-.produit_vedete .box1 span{
-    height: 2px;
-    background-color: #e4144d;
-    width: 100px;
-}
+
 .produit_vedete .articles{
-    width: 80%;
+    width:85%;
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .produit_vedete .articles .carousel{
-    height: 340px;
-    width: 220px;
+    height: 300px;
+    width: 200px;
     background-color: rgba(247, 247, 247, 0.499);
     border-radius: 5px;
     overflow: hidden;
@@ -370,6 +367,7 @@ border-radius: 20px;
     box-shadow: 7px 6px 10px -5px #00000093;
     transition: all 0.5s ease-in-out;
     position: relative;
+    margin: 20px ;
 }
 
 
@@ -378,7 +376,7 @@ border-radius: 20px;
 }
 
 .produit_vedete .articles .carousel img{
-    height: 200px;
+    height: 150px;
     width: 100%;
     object-fit: cover;
     border-bottom: 1px solid rgba(148, 146, 146, 0.499);
@@ -387,13 +385,13 @@ border-radius: 20px;
 .produit_vedete .articles .carousel #nom{
     font-weight: 400;
     overflow: hidden;
-    font-size: 20px;
+    font-size: 17px;
     width: 100%;
     margin:10px;
     padding-left:10px ;
 }
 .produit_vedete .articles .carousel #ville{
-    font-size: 14px;
+    font-size: 13px;
     color: #484848;
     text-transform: capitalize;
     width: 100%;
@@ -401,7 +399,7 @@ border-radius: 20px;
     padding-left:10px ;
 }
 .produit_vedete .articles .carousel .prix {
-    font-size: 14px;
+    font-size: 13px;
     width: 100%;
     margin:10px;
     padding-left:10px ;
@@ -409,7 +407,7 @@ border-radius: 20px;
 }
 .produit_vedete .articles .carousel .prix .span1{
     color: #e4144d;
-    font-size: 11px;
+    font-size: 10px;
 }
 .produit_vedete .articles .carousel .prix .span2{
     padding:0 2px;
@@ -419,19 +417,18 @@ border-radius: 20px;
 }
 .produit_vedete .articles .carousel .prix .span3{
     padding:0 2px;
-    font-size: 12px;
+    font-size: 11px;
     background-color: #ff5029;
     color: #ffffff;
 }
-
 .produit_vedete .articles .carousel a{
     width: 200px;
-    padding: 5px 15px;
+    padding: 4px 13px;
     background-color: #e4144d;
     margin-left: 50% ;
     color: white;
     text-decoration: none;
-    font-size: 15px;
+    font-size: 14px;
     border-radius: 10px;
     display: block;
     margin-top:10px ;
@@ -513,8 +510,8 @@ footer{
     height: 500px;
     width: 100%;
     position: relative;
-    background-image: url(/image/chemise.png);
-    background-repeat: no-repeat;
+    background-image: url(/image/market.png);
+    background-repeat: repeat;
     background-size: cover;
     background-attachment: fixed;
     flex-direction: column;
@@ -697,3 +694,159 @@ footer{
     background-color: #000000;
     color: #ffffff;
 }
+
+
+/* ajoute de style */
+.section0{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0px 100px;
+}
+
+/* ajout de la section 00 */
+
+.produit_vedetes{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-top: 30px;
+ }
+ 
+ .produit_vedetes h1{
+     margin-bottom: 25px;
+     text-transform: uppercase;
+     font-weight: 200;
+ }
+ 
+ .produit_vedetes .box1{
+     display: flex;
+     align-items: center;
+     justify-content: center;
+ }
+ 
+ .produit_vedetes .articles{
+     width: 80%;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     flex-wrap: wrap;
+ }
+ 
+ .produit_vedetes .articles .carousel{
+     height: 300px;
+     width: 200px;
+     background-color: rgba(247, 247, 247, 0.499);
+     border-radius: 5px;
+     overflow: hidden;
+     border: 1px solid rgba(105, 103, 103, 0.257);
+     box-shadow: 7px 6px 10px -5px #00000093;
+     transition: all 0.5s ease-in-out;
+     position: relative;
+     margin: 20px ;
+ }
+ 
+ 
+ .produit_vedetes .articles .carousel:hover{
+     transform: scale(1.05);
+ }
+ 
+ .produit_vedetes .articles .carousel img{
+     height: 150px;
+     width: 100%;
+     object-fit: cover;
+     border-bottom: 1px solid rgba(148, 146, 146, 0.499);
+ }
+ 
+ .produit_vedetes .articles .carousel #nom{
+     font-weight: 400;
+     overflow: hidden;
+     font-size: 17px;
+     width: 100%;
+     margin:10px;
+     padding-left:10px ;
+ }
+ .produit_vedetes .articles .carousel #ville{
+     font-size: 13px;
+     color: #484848;
+     text-transform: capitalize;
+     width: 100%;
+     margin:10px;
+     padding-left:10px ;
+ }
+ .produit_vedetes .articles .carousel .prix {
+     font-size: 13px;
+     width: 100%;
+     margin:10px;
+     padding-left:10px ;
+     font-family: Arial, Helvetica, sans-serif;
+ }
+ .produit_vedetes .articles .carousel .prix .span1{
+     color: #e4144d;
+     font-size: 10px;
+ }
+ .produit_vedetes .articles .carousel .prix .span2{
+     padding:0 2px;
+     background-color: #ededed;
+     color: #737373;
+     text-decoration: line-through;
+ }
+ .produit_vedetes .articles .carousel .prix .span3{
+     padding:0 2px;
+     font-size: 11px;
+     background-color: #ff5029;
+     color: #ffffff;
+ }
+ 
+ .produit_vedetes .articles .carousel a{
+     width: 200px;
+     padding: 5px 15px;
+     background-color: #000000;
+     color: white;
+     text-decoration: none;
+     font-size: 15px;
+     border-radius: 10px;
+     display: block;
+     margin-top:10px ;
+     transition: all 0.5s ease-in-out;
+     position: absolute;
+     bottom: 4px;
+     text-align: center;
+ }
+ .produit_vedetes .articles .carousel a:hover{
+     background-color: #2C3E50;
+ }
+ 
+ 
+ .produit_vedetes .box2{
+     width: 70%;
+     height: 50px;
+     display: flex;
+     align-items: center;
+     justify-content: space-between;
+     margin-bottom: 10px;
+ }
+ 
+ .produit_vedetes .box2 span{
+     height: 40px;
+     width: 50px;
+     background-color: #2C3E50;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     border-radius: 7px;
+     transition: all 0.5s ease-in-out;
+ }
+ .produit_vedetes .box2 p{
+     font-size: 20px;
+ }
+ .produit_vedetes .box2 span:hover{
+     transform: scale(1.1);
+     background-color: #e4144d;
+ }
+ .produit_vedetes .box2 span{
+     color: white;
+     font-size: 25px;
+ }

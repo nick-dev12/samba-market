@@ -18,7 +18,12 @@
 body{
     font-family: 'Roboto', sans-serif;
 }
-
+.erreur{
+  background-color: red;
+  color: #ffffff;
+  padding: 5px;
+  
+}
 a {
   text-decoration: none;
 }
@@ -29,9 +34,8 @@ ul {
     width: 100%;
 }
 .section .container {
-  width: 80%;
-  margin: 0 auto;
-  padding: 0rem 1rem;
+  width: 100%;
+
 }
 .section .w-6 {
   width: 2rem;
@@ -378,11 +382,10 @@ ul {
   display: flex;
   align-items: center;
   justify-content: center;
-  
 }
 .service {
   text-align: center;
-  margin: 50px;
+  margin: 40px;
 }
 .service_title {
   margin: 1.5rem 0rem;
@@ -539,8 +542,9 @@ ul {
   width: 90%;
   display: flex;
   align-items: center;
-  height: 500px;
+  height: 400px;
   margin: 0 auto;
+
 }
 .auth_img {
   width: 40%;
@@ -601,7 +605,10 @@ ul {
 }
 .form_link {
   color: var(--colo-white-1);
+  cursor: pointer;
+  font-size: 16px;
 }
 .form_group > span {
   margin-top: 2rem;
 }
+

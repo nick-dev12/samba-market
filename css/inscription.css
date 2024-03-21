@@ -23,40 +23,39 @@ body{
 }
 
 .section2 .formulaire1{
-    /* position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%,-50%); */
+  position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
 }
-.section2 .formulaire1 img {
-    height: 400px;
+.section2 .formulaire1 #img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    height: 600px;
+    width: 900px;
+    border-radius:10px ;
+    z-index: -10;
+    object-fit: cover;
 }
 .section2 .formulaire1 form{
-
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     padding: 20px 20px ;
-    background-color: #2C3E50;
+    background-color: #ffffff96;
     border-radius: 15px;
     font-family: 'Nunito', sans-serif;
-
+    border: 2px solid #d5d5d5;
+    backdrop-filter: blur(3px);
 }
 .section2 .formulaire1 .container_box{
-
     display: flex;
-    /* align-items: center;
-    justify-content: center; */
-
     padding: 30px 20px ;
-    background-color: #2C3E50;
     border-radius: 15px;
     font-family: 'Nunito', sans-serif;
-
 }
 .section2 .formulaire1 form  .container_form{
     display: flex;
@@ -80,15 +79,7 @@ body{
     align-items: center;
     justify-content: center;
 }
-.section2 .formulaire1 form .box1 .img #imagePreview{
-    color: #ffffff;
-}
-.section2 .formulaire1 form .box1 p{
-    color: #ffff;
-}
-.section2 .formulaire1 form .box1 label {
-    color: #ffff;
-}
+
 .section2 .formulaire1 form .box1 input {
     margin-top: 6px;
     margin-bottom: 20px;
@@ -96,10 +87,11 @@ body{
     height: 35px;
     border-radius: 7px;
     padding: 5px 10px;
-    border: none;
+    border: 2px solid #1f1f205d;
     outline: none;
     transition: all 0.5s ease ;
     font-size: 16px;
+    
 }
 .section2 .formulaire1 form .box1 input:focus{
     border: 2px solid rgba(0, 51, 255, 0.766);
@@ -108,13 +100,12 @@ body{
 .section2 .formulaire1 form h3 {
     margin-bottom: 30px;
     font-size: 30px;
-    color: #ffff;
 }
 
 .section2 .formulaire1 form #valider {
-   width: 110px;
+   width: 210px;
     height: 40px;
-    background-color: #3451c6;
+    background-color: #e4144d;
     border: none;
     font-size: 18px;
     border-radius: 7px;

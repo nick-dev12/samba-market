@@ -14,11 +14,11 @@
 <body>
 
 
-<?php include('src/navbare.php') ?>
+<?php include ('nav_bar.php') ?>
 
 
 
-
+<h1 class="h1" >Inscription</h1>
 
 
     <section class="section2">

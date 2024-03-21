@@ -1,6 +1,5 @@
 <?php
 
-session_start(); // Démarrez la session au début du fichier
 require_once(__DIR__ . '/../model/commerce_users.php');
 
 
@@ -100,16 +99,17 @@ if (isset($_POST['valider'])) {
         $erreurs = "Les mots de passe ne correspondent pas !";
     }
 
-    // Si aucune erreur n'est détectée, procédez à l'insertion
+    // Si aucune erreur n'est détectée, procédez à l'insertion 
     if (empty($erreurs)) {
         // Hachage du mot de passe
         $pass = password_hash($pass, PASSWORD_DEFAULT);
 
-        insertCommerce_users($db, $nom, $mail, $phone, $boutique, $ville, $uniqueFileName, $pass);
-
-        // Redirection vers une page de confirmation
-        header('Location: ../connexion.php');
+        if (insertCommerce_users($db, $nom, $mail, $phone, $boutique, $ville, $uniqueFileName, $pass)) {
+             // Redirection vers une page de confirmation
+        header('Location: ../commerçant.php');
         exit;
+        }
+        
     }
 }
 
@@ -117,6 +117,7 @@ if (isset($_POST['valider'])) {
 
 // connextion des utilisateurs
 if (isset($_POST['validers'])) {
+    $mail=$phone='';
     $user_id = $_POST['mail'];
 
     if (filter_var($user_id, FILTER_VALIDATE_EMAIL)) {
@@ -142,8 +143,7 @@ if (isset($_POST['validers'])) {
                 $erreurs = "Mot de passe incorrect";
             } else {
                 // Connexion réussie
-                $_SESSION['commercant_id'] = $user['id']; // Initialisation de la variable de session
-                $_SESSION['user_info'] = infoUsers($db, $user['id']); // Stockez les informations de l'utilisateur dans une variable de session
+                $_SESSION['commercant_id'] = $user['id_users']; // Initialisation de la variable de session
                 header('location: index.php');
                 exit();
             }
@@ -152,5 +152,6 @@ if (isset($_POST['validers'])) {
 }
 
 
-
-?>
+if (isset($_SESSION['commercant_id'])) {
+    $commercant = infoUsers($db, $_SESSION['commercant_id']);
+}
