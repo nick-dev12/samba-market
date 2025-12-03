@@ -8,7 +8,9 @@
 // Déclaration d'un tableau pour stocker les erreurs
 $erreurs = ''; // Initialisez un tableau pour stocker les erreurs
 
-include_once ('../controller/controller_commerce_users.php');
+if (file_exists(__DIR__ . '/../controllers/controller_commerce_users.php')) {
+    require_once __DIR__ . '/../controllers/controller_commerce_users.php';
+}
 
 ?>
 

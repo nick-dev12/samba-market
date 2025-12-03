@@ -6,8 +6,10 @@ session_start();
 
 // Récupérez l'ID du commerçant à partir de la session
 // Récupérez l'ID de l'utilisateur depuis la variable de session
-include('controller/controller_commerce_users.php')
-    ?>
+if (file_exists(__DIR__ . '/controllers/controller_commerce_users.php')) {
+    require_once __DIR__ . '/controllers/controller_commerce_users.php';
+}
+?>
 
 
 
@@ -20,7 +22,7 @@ include('controller/controller_commerce_users.php')
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>connexion</title>
+    <title>Tresor Africain</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
         integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -45,50 +47,51 @@ include('controller/controller_commerce_users.php')
     <?php include('nav_bar.php') ?>
 
 
+    <?php
+    // Récupérer les slides depuis la base de données
+    $slides = [];
+    if (file_exists(__DIR__ . '/models/model_slider.php')) {
+        require_once __DIR__ . '/models/model_slider.php';
+        $slides_result = get_all_slides('actif'); // Récupérer uniquement les slides actifs
+        $slides = is_array($slides_result) ? $slides_result : [];
+    }
+    ?>
+
     <div class="slider-area owl-carousel">
-        <div class="slider-item">
-            <img src="/image/produit3.avif" alt="">
-            <div data-aos="fade-right" data-aos-delay="0" data-aos-duration="700" data-aos-easing="ease-in-out"
-                data-aos-mirror="true" data-aos-once="false" data-aos-anchor-placement="top-bottom" class="box">
-                <h1>Bienvenue au Samba-Market</h1>
-                <p>Le shopping en ligne pour tous vos besoins : accessoires, vêtements, bijoux et autres.</p>
-                <button>Commencer dès maintenant</button>
-
+        <?php if (empty($slides)): ?>
+            <!-- Slides par défaut si aucun slide n'est configuré -->
+            <div class="slider-item">
+                <img src="/image/produit3.avif" alt="">
+                <div data-aos="fade-right" data-aos-delay="0" data-aos-duration="700" data-aos-easing="ease-in-out"
+                    data-aos-mirror="true" data-aos-once="false" data-aos-anchor-placement="top-bottom" class="box">
+                    <h1>Bienvenue au Trésor Africain</h1>
+                    <p>Le shopping en ligne pour tous vos besoins</p>
+                    <button>Commencer dès maintenant</button>
+                </div>
             </div>
-        </div>
-        <div class="slider-item">
-            <img src="/image/produit4.png" alt="">
-            <div class="box">
-                <h1>Des boutiques locales qui répondent à vos besoins</h1>
-                <p>Découvrez les meilleurs commerçants près de chez vous pour trouver ce dont vous avez besoin.</p>
-                <button>Explorer dès maintenant</button>
-
-            </div>
-        </div>
-        <div class="slider-item">
-            <img src="/image/produit1.jpg" alt="">
-            <div class="box">
-                <h1>Le shopping malin et facile</h1>
-                <p>Tous vos achats au même endroit, livrés où vous voulez, quand vous voulez. Le shopping simplifié !
-                </p>
-                <button>Voir les produits</button>
-
-            </div>
-        </div>
-        <div class="slider-item">
-            <img src="/image/produit2.jpg" alt="">
-            <div class="box">
-                <h1>Les tendances de demain à petit prix</h1>
-                <p>Tous vos produits du moment à des prix imbattables.</p>
-                <button>Explorer dès maintenant</button>
-
-            </div>
-        </div>
-
-
+        <?php else: ?>
+            <?php foreach ($slides as $slide): ?>
+                <div class="slider-item">
+                    <img src="/upload/slider/<?php echo htmlspecialchars($slide['image']); ?>"
+                        alt="<?php echo htmlspecialchars($slide['titre']); ?>" onerror="this.src='/image/produit1.jpg'">
+                    <div data-aos="fade-right" data-aos-delay="0" data-aos-duration="700" data-aos-easing="ease-in-out"
+                        data-aos-mirror="true" data-aos-once="false" data-aos-anchor-placement="top-bottom" class="box">
+                        <h1><?php echo htmlspecialchars($slide['titre']); ?></h1>
+                        <p><?php echo htmlspecialchars($slide['paragraphe']); ?></p>
+                        <?php if ($slide['bouton_texte']): ?>
+                            <?php if ($slide['bouton_lien']): ?>
+                                <a href="<?php echo htmlspecialchars($slide['bouton_lien']); ?>">
+                                    <button><?php echo htmlspecialchars($slide['bouton_texte']); ?></button>
+                                </a>
+                            <?php else: ?>
+                                <button><?php echo htmlspecialchars($slide['bouton_texte']); ?></button>
+                            <?php endif; ?>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        <?php endif; ?>
     </div>
-
-
 
 
     <section class="section3">
@@ -106,123 +109,54 @@ include('controller/controller_commerce_users.php')
         </div>
     </section>
 
-    <section class="categorie owl-carousel">
-        <div class="item">
-            <img class="img" src="/image/electronique.png" alt="">
-            <p>Électronique</p>
-            <span>26 element</span>
-        </div>
-        <div class="item">
-            <img class="img" src="/image/vetement.png" alt="">
-            <p>Vêtements</p>
-            <span>26 element</span>
-        </div>
-        <div class="item">
-            <img class="img" src="/image/livre.jpg" alt="">
-            <p>Livre</p>
-            <span>26 element</span>
-        </div>
-        <div class="item">
-            <img class="img" src="/image/Électroménagers.png" alt="">
-            <p>Électroménagers</p>
-            <span>26 element</span>
-        </div>
-        <div class="item">
-            <img class="img" src="/image/Meubles.png" alt="">
-            <p>Meubles</p>
-            <span>26 element</span>
-        </div>
-        <div class="item">
-            <img class="img" src="/image/Jouets.png" alt="">
-            <p>Jouets</p>
-            <span>26 element</span>
-        </div>
-        <div class="item">
-            <img class="img" src="/image/Articles de sport.png" alt="">
-            <p>Articles de sport</p>
-            <span>26 element</span>
-        </div>
-        <div class="item">
-            <img class="img" src="/image/Beauté et soins personnels.png" alt="">
-            <p>Beauté et soins personnels</p>
-            <span>26 element</span>
-        </div>
-        <div class="item">
-            <img class="img" src="/image/Animaux de compagnie.png" alt="">
-            <p>Animaux de compagnie</p>
-            <span>26 element</span>
-        </div>
-        <div class="item">
-            <img class="img" src="/image/Outils et équipement.png" alt="">
-            <p>Outils et équipement</p>
-            <span>26 element</span>
-        </div>
-        <div class="item">
-            <img class="img" src="/image/Arts.png" alt="">
-            <p>Arts</p>
-            <span>26 element</span>
-        </div>
+    <?php
+    // Récupérer les catégories depuis la base de données
+    $categories = [];
+    if (file_exists(__DIR__ . '/models/model_categories.php')) {
+        require_once __DIR__ . '/models/model_categories.php';
+        $categories_result = get_all_categories_with_count();
+        $categories = is_array($categories_result) ? $categories_result : [];
+    }
+    ?>
 
+    <section class="categorie owl-carousel">
+        <?php if (empty($categories)): ?>
+            <!-- Catégories par défaut si aucune catégorie n'est configurée -->
+            <div class="item">
+                <img class="img" src="/image/electronique.png" alt="">
+                <p>Électronique</p>
+                <span>0 element</span>
+            </div>
+        <?php else: ?>
+            <?php foreach ($categories as $categorie): ?>
+                <a href="categorie.php?id=<?php echo $categorie['id']; ?>" style="text-decoration: none; color: inherit;">
+                    <div class="item">
+                        <?php if ($categorie['image']): ?>
+                            <img class="img" src="/upload/<?php echo htmlspecialchars($categorie['image']); ?>"
+                                alt="<?php echo htmlspecialchars($categorie['nom']); ?>" onerror="this.src='/image/produit1.jpg'">
+                        <?php else: ?>
+                            <img class="img" src="/image/produit1.jpg" alt="<?php echo htmlspecialchars($categorie['nom']); ?>">
+                        <?php endif; ?>
+                        <p><?php echo htmlspecialchars($categorie['nom']); ?></p>
+                        <span><?php echo (int) $categorie['nb_produits']; ?>
+                            element<?php echo (int) $categorie['nb_produits'] > 1 ? 's' : ''; ?></span>
+                    </div>
+                </a>
+            <?php endforeach; ?>
+        <?php endif; ?>
     </section>
 
-    <div class="affiches">
-        <div class="box1">
-            <h1>Explorer encore plus</h1>
-        </div>
-        <div class="containe-box">
-            <div class="box2">
-                <div class="slider1 slider owl-carousel">
-                    <div class="item">
-                        <img src="/image/produit4.png" alt="">
-                        <h4>bonjour je suis</h4>
-                        <p><span class="span1">200f</span>
-                            <span class="span2">600f</span>
-                            <span class="span3">-20%</span>
-                        </p>
-                    </div>
-                    <div class="item">
-                        <img src="/image/chaussure1.jpg" alt="">
-                        <h4>bonjour je suis</h4>
-                        <p><span class="span1">200f</span>
-                            <span class="span2">600f</span>
-                            <span class="span3">-20%</span>
-                        </p>
-                    </div>
-                </div>
-                <div class="slider1 slider owl-carousel">
-                    <div class="item">
-                        <img src="/image/produit4.png" alt="">
-                        <h4>bonjour je suis</h4>
-                        <p><span class="span1">200f</span>
-                            <span class="span2">600f</span>
-                            <span class="span3">-20%</span>
-                        </p>
-                    </div>
-                    <div class="item">
-                        <img src="/image/chaussure1.jpg" alt="">
-                        <h4>bonjour je suis</h4>
-                        <p><span class="span1">200f</span>
-                            <span class="span2">600f</span>
-                            <span class="span3">-20%</span>
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="s_box2">
-                <div class="explore">
-                    <p><span class="span11">
-                            </span>beauté+<span class="span22">></span></p>
-                    <a href="">Explorer</a>
-                </div>
-                <div class="slider">
-                    <img src="/image/beaute+.png" alt="">
-                </div>
-            </div>
-        </div>
-
-    </div>
 
 
+
+    <?php
+    // Récupérer les produits vedettes (les plus ajoutés au panier et les plus commandés)
+    $produits_vedettes = [];
+    if (file_exists(__DIR__ . '/models/model_produits.php')) {
+        require_once __DIR__ . '/models/model_produits.php';
+        $produits_vedettes = get_produits_vedettes(20);
+    }
+    ?>
 
     <section class="produit_vedete">
         <div class="box1">
@@ -239,88 +173,159 @@ include('controller/controller_commerce_users.php')
         <article data-aos="fade-up" data-aos-delay="0" data-aos-duration="1000" data-aos-easing="ease-in-out"
             data-aos-mirror="true" data-aos-once="false" data-aos-anchor-placement="top-bottom"
             class="articles owl-carousel carousel1">
-            <div class="carousel">
-                <img src="/upload/sac1.jpg" alt="">
-                <p id="nom">sac a main</p>
-                <p class="prix">6000<span class="span1">fca</span> <span class="span2">2000fca</span> <span
-                        class="span3">-10%</span></p>
-                <p id="ville">libreville</p>
-                <a href="#"><i class="fa-solid fa-cart-shopping fa-xs"></i></span> Ajouter</a>
-            </div>
-
-            <div class="carousel">
-                <img src="/upload/t-shirt1.jpg" alt="">
-                <p id="nom">t-shirt hummel</p>
-                <p class="prix">6000<span class="span1">fca</span> <span class="span2">2000fca</span> <span
-                        class="span3">-10%</span></p>
-                <p id="ville">libreville</p>
-                <a href="#"><i class="fa-solid fa-cart-shopping fa-xs"></i></span> Ajouter</a>
-            </div>
-
-            <div class="carousel">
-                <img src="/upload/montre1.jpg" alt="">
-                <p id="nom">montre de lux</p>
-                <p class="prix">6000<span class="span1">fca</span> <span class="span2">2000fca</span> <span
-                        class="span3">-10%</span></p>
-                <p id="ville">libreville</p>
-                <a href="#"><i class="fa-solid fa-cart-shopping fa-xs"></i></span> Ajouter</a>
-            </div>
-
-            <div class="carousel">
-                <img src="/upload/sac2.jpg" alt="">
-                <p id="nom">sac a main</p>
-                <p class="prix">6000<span class="span1">fca</span> <span class="span2">2000fca</span> <span
-                        class="span3">-10%</span></p>
-                <p id="ville">libreville</p>
-                <a href="#"><i class="fa-solid fa-cart-shopping fa-xs"></i></span> Ajouter</a>
-            </div>
-
-            <div class="carousel">
-                <img src="/upload/collier.jpg" alt="">
-                <p id="nom">collier de sortie</p>
-                <p class="prix">6000<span class="span1">fca</span> <span class="span2">2000fca</span> <span
-                        class="span3">-10%</span></p>
-                <p id="ville">libreville</p>
-                <a href="#"><i class="fa-solid fa-cart-shopping fa-xs"></i></span> Ajouter</a>
-            </div>
-
-            <div class="carousel">
-                <img src="/upload/chaussures 1.jpg" alt="">
-                <p id="nom">chaussures nike</p>
-                <p class="prix">6000<span class="span1">fca</span> <span class="span2">2000fca</span> <span
-                        class="span3">-10%</span></p>
-                <p id="ville">libreville</p>
-                <a href="#"><i class="fa-solid fa-cart-shopping fa-xs"></i></span> Ajouter</a>
-            </div>
+            <?php if (empty($produits_vedettes)): ?>
+                <!-- Message si aucun produit -->
+                <div class="carousel" style="text-align: center; padding: 40px;">
+                    <p>Aucun produit disponible pour le moment.</p>
+                </div>
+            <?php else: ?>
+                <?php foreach ($produits_vedettes as $produit): ?>
+                    <?php
+                    // Calculer le prix à afficher
+                    $prix_affichage = !empty($produit['prix_promotion']) && $produit['prix_promotion'] < $produit['prix']
+                        ? $produit['prix_promotion']
+                        : $produit['prix'];
+                    $has_promotion = !empty($produit['prix_promotion']) && $produit['prix_promotion'] < $produit['prix'];
+                    $pourcentage_promo = $has_promotion ? round((($produit['prix'] - $produit['prix_promotion']) / $produit['prix']) * 100) : 0;
+                    ?>
+                    <div class="carousel">
+                        <img src="/upload/<?php echo htmlspecialchars($produit['image_principale'] ?? 'produit1.jpg'); ?>"
+                            alt="<?php echo htmlspecialchars($produit['nom'] ?? 'Produit'); ?>"
+                            onerror="this.src='/image/produit1.jpg'">
+                        <p id="nom"><?php echo htmlspecialchars($produit['nom'] ?? 'Produit sans nom'); ?></p>
+                        <p class="prix">
+                            <?php echo number_format($prix_affichage, 0, ',', ' '); ?><span class="span1">fca</span>
+                            <?php if ($has_promotion): ?>
+                                <span class="span2"><?php echo number_format($produit['prix'], 0, ',', ' '); ?>fca</span>
+                                <span class="span3">-<?php echo $pourcentage_promo; ?>%</span>
+                            <?php endif; ?>
+                        </p>
+                        <p id="ville">
+                            <?php if (!empty($produit['categorie_nom'])): ?>
+                                <?php echo htmlspecialchars($produit['categorie_nom']); ?>
+                            <?php endif; ?>
+                            <?php if (!empty($produit['stock'])): ?>
+                                | Stock: <?php echo $produit['stock']; ?>
+                            <?php endif; ?>
+                        </p>
+                        <a href="produit.php?id=<?php echo $produit['id']; ?>">
+                            <i class="fa-solid fa-cart-shopping fa-xs"></i> Ajouter
+                        </a>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
         </article>
     </section>
 
 
+    <?php
+    // Récupérer la configuration de la section4
+    $section4_config = [
+        'titre' => 'Bienvenue au Tresor Africain',
+        'texte' => 'Tous les produits a petit prix',
+        'image_fond' => 'market.png'
+    ];
+
+    if (file_exists(__DIR__ . '/models/model_section4.php')) {
+        require_once __DIR__ . '/models/model_section4.php';
+        $config_result = get_section4_config();
+        if ($config_result) {
+            $section4_config = $config_result;
+        }
+    }
+
+    // Déterminer le chemin de l'image de fond
+    $image_fond_path = '/image/market.png'; // Par défaut
+    if (!empty($section4_config['image_fond'])) {
+        $upload_path = '/upload/section4/' . htmlspecialchars($section4_config['image_fond']);
+        $file_path = __DIR__ . '/upload/section4/' . $section4_config['image_fond'];
+        if (file_exists($file_path)) {
+            $image_fond_path = $upload_path;
+        }
+    }
+    ?>
     <section class="section4">
-        <div class="slider ">
+        <div class="slider" style="background-image: url('<?php echo $image_fond_path; ?>');">
             <div class="box">
                 <div class="text">
-                    <h1>Bienvenue au Samba-Market</h1>
+                    <h1><?php echo htmlspecialchars($section4_config['titre']); ?></h1>
                 </div>
             </div>
-            <p>Tous les produits a petit prix</p>
-            <a href="">Nouveau Shopping</a>
+            <p><?php echo htmlspecialchars($section4_config['texte']); ?></p>
+            <?php if (!isset($_SESSION['user_id']) && !isset($_SESSION['commercant_id'])): ?>
+                <div style="display: flex; gap: 15px; justify-content: center; margin-top: 20px;">
+                    <a href="/user/inscription.php"
+                        style="padding: 12px 30px; background: linear-gradient(135deg, #918a44 0%, #c26638 100%); color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: 600; transition: all 0.3s ease;">
+                        <i class="fas fa-user-plus"></i> Créer un compte
+                    </a>
+                    <a href="/user/connexion.php"
+                        style="padding: 12px 30px; background: transparent; color: #ffffff; text-decoration: none; border: 2px solid #ffffff; border-radius: 8px; font-weight: 600; transition: all 0.3s ease;">
+                        <i class="fas fa-sign-in-alt"></i> Se connecter
+                    </a>
+                </div>
+            <?php else: ?>
+                <a href="/user/mon-compte.php">Mon Compte</a>
+            <?php endif; ?>
         </div>
-
     </section>
 
+    <?php
+    // Récupérer la configuration de la section trending
+    $trending_config = [
+        'label' => 'categories',
+        'titre' => 'Enhance Your Music Experience',
+        'bouton_texte' => 'Buy Now!',
+        'bouton_lien' => '#',
+        'image' => 'speaker.png'
+    ];
+
+    if (file_exists(__DIR__ . '/models/model_trending.php')) {
+        require_once __DIR__ . '/models/model_trending.php';
+        $config_result = get_trending_config();
+        if ($config_result) {
+            $trending_config = $config_result;
+        }
+    }
+
+    // Déterminer le chemin de l'image
+    $trending_image_path = '/image/speaker.png'; // Par défaut
+    if (!empty($trending_config['image'])) {
+        if ($trending_config['image'] !== 'speaker.png') {
+            $upload_path = '/upload/trending/' . htmlspecialchars($trending_config['image']);
+            $file_path = __DIR__ . '/upload/trending/' . $trending_config['image'];
+            if (file_exists($file_path)) {
+                $trending_image_path = $upload_path;
+            }
+        } else {
+            $trending_image_path = '/image/speaker.png';
+        }
+    }
+    ?>
     <section class="section">
         <div class="container">
             <div class="trending">
                 <div class="trending_content">
-                    <p class="trending_p">categories</p>
-                    <h2 class="trending_title">Enhance Your Music Experience</h2>
-                    <a href="#" class="trending_btn">Buy Now!</a>
+                    <p class="trending_p"><?php echo htmlspecialchars($trending_config['label']); ?></p>
+                    <h2 class="trending_title"><?php echo htmlspecialchars($trending_config['titre']); ?></h2>
+                    <a href="<?php echo htmlspecialchars($trending_config['bouton_lien']); ?>" class="trending_btn">
+                        <?php echo htmlspecialchars($trending_config['bouton_texte']); ?>
+                    </a>
                 </div>
-                <img src="/image/speaker.png" alt="" class="trending_img" />
+                <img src="<?php echo $trending_image_path; ?>"
+                    alt="<?php echo htmlspecialchars($trending_config['titre']); ?>" class="trending_img"
+                    onerror="this.src='/image/speaker.png'" />
             </div>
         </div>
     </section>
+
+    <?php
+    // Récupérer les produits les plus visités
+    $produits_populaires = [];
+    if (file_exists(__DIR__ . '/models/model_visites.php')) {
+        require_once __DIR__ . '/models/model_visites.php';
+        $produits_populaires = get_produits_plus_visites(10);
+    }
+    ?>
 
     <section class="produit_vedete">
         <div class="box1">
@@ -337,239 +342,244 @@ include('controller/controller_commerce_users.php')
         <article data-aos="fade-up" data-aos-delay="0" data-aos-duration="1000" data-aos-easing="ease-in-out"
             data-aos-mirror="true" data-aos-once="false" data-aos-anchor-placement="top-bottom"
             class="articles owl-carousel carousel1">
-            <div class="carousel">
-                <img src="/upload/ventilateur.jpg" alt="">
-                <p id="nom">montre de lux</p>
-                <p class="prix">6000<span class="span1">fca</span> <span class="span2">2000fca</span> <span
-                        class="span3">-10%</span></p>
-                <p id="ville">libreville</p>
-                <a href="#"><i class="fa-solid fa-cart-shopping fa-xs"></i></span> Ajouter</a>
-            </div>
-
-            <div class="carousel">
-                <img src="/upload/A12.jpg" alt="">
-                <p id="nom">montre de lux</p>
-                <p class="prix">6000<span class="span1">fca</span> <span class="span2">2000fca</span> <span
-                        class="span3">-10%</span></p>
-                <p id="ville">libreville</p>
-                <a href="#"><i class="fa-solid fa-cart-shopping fa-xs"></i></span> Ajouter</a>
-            </div>
-
-            <div class="carousel">
-                <img src="/upload/meches1.jpg" alt="">
-                <p id="nom">montre de lux</p>
-                <p class="prix">6000<span class="span1">fca</span> <span class="span2">2000fca</span> <span
-                        class="span3">-10%</span></p>
-                <p id="ville">libreville</p>
-                <a href="#"><i class="fa-solid fa-cart-shopping fa-xs"></i></span> Ajouter</a>
-            </div>
-
-            <div class="carousel">
-                <img src="/upload/SPARK-7.png" alt="">
-                <p id="nom">montre de lux</p>
-                <p class="prix">6000<span class="span1">fca</span> <span class="span2">2000fca</span> <span
-                        class="span3">-10%</span></p>
-                <p id="ville">libreville</p>
-                <a href="#"><i class="fa-solid fa-cart-shopping fa-xs"></i></span> Ajouter</a>
-            </div>
-
-            <div class="carousel">
-                <img src="/upload/robe1.jpg" alt="">
-                <p id="nom">montre de lux</p>
-                <p class="prix">6000<span class="span1">fca</span> <span class="span2">2000fca</span> <span
-                        class="span3">-10%</span></p>
-                <p id="ville">libreville</p>
-                <a href="#"><i class="fa-solid fa-cart-shopping fa-xs"></i></span> Ajouter</a>
-            </div>
-
-            <div class="carousel">
-                <img src="/upload/sweat-capuche-femme-300vdx-1.jpg" alt="">
-                <p id="nom">montre de lux</p>
-                <p class="prix">6000<span class="span1">fca</span> <span class="span2">2000fca</span> <span
-                        class="span3">-10%</span></p>
-                <p id="ville">libreville</p>
-                <a href="#"><i class="fa-solid fa-cart-shopping fa-xs"></i></span> Ajouter</a>
-            </div>
-
-            <div class="carousel">
-                <img src="/upload/collier.jpg" alt="">
-                <p id="nom">montre de lux</p>
-                <p class="prix">6000<span class="span1">fca</span> <span class="span2">2000fca</span> <span
-                        class="span3">-10%</span></p>
-                <p id="ville">libreville</p>
-                <a href="#"><i class="fa-solid fa-cart-shopping fa-xs"></i></span> Ajouter</a>
-            </div>
+            <?php if (empty($produits_populaires)): ?>
+                <!-- Message si aucun produit -->
+                <div class="carousel" style="text-align: center; padding: 40px;">
+                    <p>Aucun produit disponible pour le moment.</p>
+                </div>
+            <?php else: ?>
+                <?php foreach ($produits_populaires as $produit): ?>
+                    <?php
+                    // Calculer le prix à afficher
+                    $prix_affichage = !empty($produit['prix_promotion']) && $produit['prix_promotion'] < $produit['prix']
+                        ? $produit['prix_promotion']
+                        : $produit['prix'];
+                    $has_promotion = !empty($produit['prix_promotion']) && $produit['prix_promotion'] < $produit['prix'];
+                    $pourcentage_promo = $has_promotion ? round((($produit['prix'] - $produit['prix_promotion']) / $produit['prix']) * 100) : 0;
+                    ?>
+                    <div class="carousel">
+                        <img src="/upload/<?php echo htmlspecialchars($produit['image_principale'] ?? 'produit1.jpg'); ?>"
+                            alt="<?php echo htmlspecialchars($produit['nom'] ?? 'Produit'); ?>"
+                            onerror="this.src='/image/produit1.jpg'">
+                        <p id="nom"><?php echo htmlspecialchars($produit['nom'] ?? 'Produit sans nom'); ?></p>
+                        <p class="prix">
+                            <?php echo number_format($prix_affichage, 0, ',', ' '); ?><span class="span1">fca</span>
+                            <?php if ($has_promotion): ?>
+                                <span class="span2"><?php echo number_format($produit['prix'], 0, ',', ' '); ?>fca</span>
+                                <span class="span3">-<?php echo $pourcentage_promo; ?>%</span>
+                            <?php endif; ?>
+                        </p>
+                        <p id="ville">
+                            <?php if (!empty($produit['categorie_nom'])): ?>
+                                <?php echo htmlspecialchars($produit['categorie_nom']); ?>
+                            <?php endif; ?>
+                            <?php if (!empty($produit['stock'])): ?>
+                                | Stock: <?php echo $produit['stock']; ?>
+                            <?php endif; ?>
+                        </p>
+                        <a href="produit.php?id=<?php echo $produit['id']; ?>">
+                            <i class="fa-solid fa-cart-shopping fa-xs"></i> Ajouter
+                        </a>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
         </article>
     </section>
 
 
 
+
+    <?php
+    // Récupérer les catégories les plus populaires (visites + commandes) - Maximum 2
+    $top_categories = [];
+    if (file_exists(__DIR__ . '/models/model_categories.php')) {
+        require_once __DIR__ . '/models/model_categories.php';
+        $top_categories = get_top_categories(2);
+    }
+    ?>
 
     <section class="section5">
         <h1>Top Categorie</h1>
         <div class="container">
-
-            <div class="slider">
-                <img src="/image/produit2.jpg" alt="">
-                <div class="box">
-                    <h4>ENFANT</h4>
-                    <a href="">Voir cette categorie ></a>
+            <?php if (empty($top_categories)): ?>
+                <!-- Message si aucune catégorie -->
+                <div style="text-align: center; padding: 40px; color: #666;">
+                    <p>Aucune catégorie disponible pour le moment.</p>
                 </div>
-            </div>
-
-            <div class="slider">
-                <img src="/image/chaussure.png" alt="">
-                <div class="box">
-                    <h4>chaussure</h4>
-                    <a href="">Voir cette categorie ></a>
-                </div>
-            </div>
-
-            <!-- <div class="slider">
-            <img src="/image/menager.png" alt="">
-            <div class="box">
-                <h4>E-Menager</h4>
-                <a href="">Voir cette categorie ></a>
-            </div>
-        </div> -->
+            <?php else: ?>
+                <?php foreach ($top_categories as $categorie): ?>
+                    <?php
+                    // Déterminer le chemin de l'image
+                    $categorie_image_path = '/image/produit1.jpg'; // Par défaut
+                    if (!empty($categorie['image'])) {
+                        $upload_path = '/upload/' . htmlspecialchars($categorie['image']);
+                        $file_path = __DIR__ . '/upload/' . $categorie['image'];
+                        if (file_exists($file_path)) {
+                            $categorie_image_path = $upload_path;
+                        }
+                    }
+                    ?>
+                    <div class="slider">
+                        <img src="<?php echo $categorie_image_path; ?>" alt="<?php echo htmlspecialchars($categorie['nom']); ?>"
+                            onerror="this.src='/image/produit1.jpg'">
+                        <div class="box">
+                            <h4><?php echo htmlspecialchars(strtoupper($categorie['nom'])); ?></h4>
+                            <a href="categorie.php?id=<?php echo $categorie['id']; ?>">Voir cette categorie ></a>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
         </div>
     </section>
 
-    <!-- <div class="produit_afiche">
-        <div class="box">
-            <img data-aos="fade-right" data-aos-delay="0" data-aos-duration="700" data-aos-easing="ease-in-out"
+
+
+
+    <?php
+    // Récupérer les produits de la catégorie "Cosmétiques"
+    $produits_cosmetiques = [];
+    if (file_exists(__DIR__ . '/models/model_categories.php') && file_exists(__DIR__ . '/models/model_produits.php')) {
+        require_once __DIR__ . '/models/model_categories.php';
+        require_once __DIR__ . '/models/model_produits.php';
+
+        // Récupérer la catégorie "Cosmétiques"
+        $categorie_cosmetiques = get_categorie_by_nom('Les Cosmétiques');
+
+        // Si la catégorie n'existe pas, essayer avec "Cosmétiques" (sans "Les")
+        if (!$categorie_cosmetiques) {
+            $categorie_cosmetiques = get_categorie_by_nom('Cosmétiques');
+        }
+
+        // Si la catégorie existe, récupérer ses produits
+        if ($categorie_cosmetiques && isset($categorie_cosmetiques['id'])) {
+            $produits_cosmetiques = get_produits_by_categorie($categorie_cosmetiques['id']);
+
+            // Mélanger aléatoirement les produits
+            if (!empty($produits_cosmetiques)) {
+                mt_srand(time() + (int) (microtime(true) * 1000000));
+                shuffle($produits_cosmetiques);
+            }
+        }
+    }
+    ?>
+
+    <?php if (!empty($produits_cosmetiques)): ?>
+        <section class="produit_vedete">
+            <div class="box1">
+                <span></span>
+                <h1>Tout pour le corps et pour le bien-être</h1>
+                <span></span>
+            </div>
+
+            <article data-aos="fade-up" data-aos-delay="0" data-aos-duration="1000" data-aos-easing="ease-in-out"
                 data-aos-mirror="true" data-aos-once="false" data-aos-anchor-placement="top-bottom"
-                src="/image/belles.jpg" alt="">
-            <h1 data-aos="fade-left" data-aos-delay="300" data-aos-duration="700" data-aos-easing="ease-in-out"
-                data-aos-mirror="true" data-aos-once="false" data-aos-anchor-placement="top-bottom">Nouvelle douceur
-            </h1>
-        </div>
-    </div> -->
-
-
-
-    <section class="produit_vedete">
-        <div class="box1">
-            <span></span>
-            <h1>Tout pour la maison au meilleur prix</h1>
-            <span></span>
-        </div>
-
-
-        <article data-aos="fade-up" data-aos-delay="0" data-aos-duration="1000" data-aos-easing="ease-in-out"
-            data-aos-mirror="true" data-aos-once="false" data-aos-anchor-placement="top-bottom"
-            class="articles owl-carousel carousel1">
-            <div class="carousel">
-                <img src="/image/chaise1.avif" alt="">
-                <p id="nom">montre de lux</p>
-                <p class="prix">6000<span class="span1">fca</span> <span class="span2">2000fca</span> <span
-                        class="span3">-10%</span></p>
-                <p id="ville">libreville</p>
-                <a href="#"><i class="fa-solid fa-cart-shopping fa-xs"></i></span> Ajouter</a>
-            </div>
-
-            <div class="carousel">
-                <img src="/upload/chaise2.jpeg" alt="">
-                <p id="nom">montre de lux</p>
-                <p class="prix">6000<span class="span1">fca</span> <span class="span2">2000fca</span> <span
-                        class="span3">-10%</span></p>
-                <p id="ville">libreville</p>
-                <a href="#"><i class="fa-solid fa-cart-shopping fa-xs"></i></span> Ajouter</a>
-            </div>
-
-            <div class="carousel">
-                <img src="/upload/rido1.jpg" alt="">
-                <p id="nom">montre de lux</p>
-                <p class="prix">6000<span class="span1">fca</span> <span class="span2">2000fca</span> <span
-                        class="span3">-10%</span></p>
-                <p id="ville">libreville</p>
-                <a href="#"><i class="fa-solid fa-cart-shopping fa-xs"></i></span> Ajouter</a>
-            </div>
-
-            <div class="carousel">
-                <img src="/upload/fauteuil1.jpg" alt="">
-                <p id="nom">montre de lux</p>
-                <p class="prix">6000<span class="span1">fca</span> <span class="span2">2000fca</span> <span
-                        class="span3">-10%</span></p>
-                <p id="ville">libreville</p>
-                <a href="#"><i class="fa-solid fa-cart-shopping fa-xs"></i></span> Ajouter</a>
-            </div>
-
-            <div class="carousel">
-                <img src="/upload/ampoule1.jpg" alt="">
-                <p id="nom">montre de lux</p>
-                <p class="prix">6000<span class="span1">fca</span> <span class="span2">2000fca</span> <span
-                        class="span3">-10%</span></p>
-                <p id="ville">libreville</p>
-                <a href="#"><i class="fa-solid fa-cart-shopping fa-xs"></i></span> Ajouter</a>
-            </div>
-
-            <div class="carousel">
-                <img src="/upload/rideaux.jpg" alt="">
-                <p id="nom">montre de lux</p>
-                <p class="prix">6000<span class="span1">fca</span> <span class="span2">2000fca</span> <span
-                        class="span3">-10%</span></p>
-                <p id="ville">libreville</p>
-                <a href="#"><i class="fa-solid fa-cart-shopping fa-xs"></i></span> Ajouter</a>
-            </div>
-        </article>
-    </section>
-
-
-
-
-    <section class="section0">
-        <div class="container">
-            <div class="section_category">
-                <p class="section_category_p">En vedette</p>
-            </div>
-            <div class="section_header">
-                <h3 class="section_title">Nouveautés</h3>
-            </div>
-            <div class="gallery">
-                <div class="gallery_item gallery_item_1">
-                    <img src="./image/gallery/gallery-1.png" alt="" class="gallery_item_img" />
-                    <div class="gallery_item_content">
-                        <div class="gallery_item_title">Playstation 5</div>
-                        <p class="gallery_item_p">
-                            Ce qui compte, c'est de se faire plaisir.
+                class="articles owl-carousel carousel1">
+                <?php foreach ($produits_cosmetiques as $produit): ?>
+                    <?php
+                    // Calculer le prix à afficher
+                    $prix_affichage = !empty($produit['prix_promotion']) && $produit['prix_promotion'] < $produit['prix']
+                        ? $produit['prix_promotion']
+                        : $produit['prix'];
+                    $has_promotion = !empty($produit['prix_promotion']) && $produit['prix_promotion'] < $produit['prix'];
+                    $pourcentage_promo = $has_promotion ? round((($produit['prix'] - $produit['prix_promotion']) / $produit['prix']) * 100) : 0;
+                    ?>
+                    <div class="carousel">
+                        <img src="/upload/<?php echo htmlspecialchars($produit['image_principale'] ?? 'produit1.jpg'); ?>"
+                            alt="<?php echo htmlspecialchars($produit['nom'] ?? 'Produit'); ?>"
+                            onerror="this.src='/image/produit1.jpg'">
+                        <p id="nom"><?php echo htmlspecialchars($produit['nom'] ?? 'Produit sans nom'); ?></p>
+                        <p class="prix">
+                            <?php echo number_format($prix_affichage, 0, ',', ' '); ?><span class="span1">fca</span>
+                            <?php if ($has_promotion): ?>
+                                <span class="span2"><?php echo number_format($produit['prix'], 0, ',', ' '); ?>fca</span>
+                                <span class="span3">-<?php echo $pourcentage_promo; ?>%</span>
+                            <?php endif; ?>
                         </p>
-                        <a href="#" class="gallery_item_link">ACHETER MAINTENANT</a>
+                        <p id="ville">
+                            <?php if (!empty($produit['categorie_nom'])): ?>
+                                <?php echo htmlspecialchars($produit['categorie_nom']); ?>
+                            <?php endif; ?>
+                            <?php if (!empty($produit['stock'])): ?>
+                                | Stock: <?php echo $produit['stock']; ?>
+                            <?php endif; ?>
+                        </p>
+                        <a href="produit.php?id=<?php echo $produit['id']; ?>">
+                            <i class="fa-solid fa-cart-shopping fa-xs"></i> Ajouter
+                        </a>
                     </div>
+                <?php endforeach; ?>
+            </article>
+        </section>
+    <?php endif; ?>
+
+
+
+
+    <?php
+    // Récupérer les produits les plus récents (nouveautés) - Maximum 4
+    $produits_nouveautes = [];
+    if (file_exists(__DIR__ . '/models/model_produits.php')) {
+        require_once __DIR__ . '/models/model_produits.php';
+        $produits_nouveautes = get_produits_nouveautes(4);
+    }
+
+    // Classes CSS pour les différents items de la galerie
+    $gallery_classes = ['gallery_item_1', 'gallery_item_2', 'gallery_item_3', 'gallery_item_4'];
+    ?>
+
+    <?php if (!empty($produits_nouveautes)): ?>
+        <section class="section0">
+            <div class="container">
+                <div class="section_category">
+                    <p class="section_category_p">En vedette</p>
                 </div>
-                <div class="gallery_item gallery_item_2">
-                    <img src="./image/femme.png" alt="" class="gallery_item_img" />
-                    <div class="gallery_item_content">
-                        <div class="gallery_item_title">Femme d'honneur</div>
-                        <p class="gallery_item_p">
-                            Tout pour vous faire plaisir!
-                        </p>
-                        <a href="#" class="gallery_item_link">COMMENDER</a>
-                    </div>
+                <div class="section_header">
+                    <h3 class="section_title">Nouveautés</h3>
                 </div>
-                <div class="gallery_item gallery_item_3">
-                    <img src="./image/airpod.png" alt="" class="gallery_item_img" />
-                    <div class="gallery_item_content">
-                        <div class="gallery_item_title">AirPods</div>
-                        <p class="gallery_item_p">
-                            Viver la musique autrement
-                        </p>
-                        <a href="#" class="gallery_item_link">COMMENDER</a>
-                    </div>
-                </div>
-                <div class="gallery_item gallery_item_4">
-                    <img src="./image/gallery/gallery-4.png" alt="" class="gallery_item_img" />
-                    <div class="gallery_item_content">
-                        <div class="gallery_item_title">Playstation 5</div>
-                        <p class="gallery_item_p">
-                            Lorem ipsum dolor sit amet consectetur adipisicing.
-                        </p>
-                        <a href="#" class="gallery_item_link">SHOP NOW</a>
-                    </div>
+                <div class="gallery">
+                    <?php foreach ($produits_nouveautes as $index => $produit): ?>
+                        <?php
+                        // Déterminer le chemin de l'image
+                        $produit_image_path = '/image/produit1.jpg'; // Par défaut
+                        if (!empty($produit['image_principale'])) {
+                            $upload_path = '/upload/' . htmlspecialchars($produit['image_principale']);
+                            $file_path = __DIR__ . '/upload/' . $produit['image_principale'];
+                            if (file_exists($file_path)) {
+                                $produit_image_path = $upload_path;
+                            }
+                        }
+
+                        // Calculer le prix à afficher
+                        $prix_affichage = !empty($produit['prix_promotion']) && $produit['prix_promotion'] < $produit['prix']
+                            ? $produit['prix_promotion']
+                            : $produit['prix'];
+
+                        // Description courte (limiter à 80 caractères)
+                        $description = !empty($produit['description'])
+                            ? htmlspecialchars(substr($produit['description'], 0, 80)) . (strlen($produit['description']) > 80 ? '...' : '')
+                            : 'Découvrez ce produit naturel de qualité.';
+
+                        // Classe CSS pour l'item
+                        $gallery_class = isset($gallery_classes[$index]) ? $gallery_classes[$index] : 'gallery_item_1';
+                        ?>
+                        <div class="gallery_item <?php echo $gallery_class; ?>">
+                            <img src="<?php echo $produit_image_path; ?>" alt="<?php echo htmlspecialchars($produit['nom']); ?>"
+                                class="gallery_item_img" onerror="this.src='/image/produit1.jpg'">
+                            <div class="gallery_item_content">
+                                <div class="gallery_item_title"><?php echo htmlspecialchars($produit['nom']); ?></div>
+                                <p class="gallery_item_p">
+                                    <?php echo $description; ?>
+                                </p>
+                                <a href="produit.php?id=<?php echo $produit['id']; ?>" class="gallery_item_link">
+                                    ACHETER MAINTENANT
+                                </a>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+    <?php endif; ?>
 
     <section class="section0">
         <div class="container services_container">
@@ -592,6 +602,17 @@ include('controller/controller_commerce_users.php')
     </section>
 
 
+    <?php
+    // Récupérer les 20 premiers produits
+    $produits_tous = [];
+    $total_produits = 0;
+    if (file_exists(__DIR__ . '/models/model_produits.php')) {
+        require_once __DIR__ . '/models/model_produits.php';
+        $produits_tous = get_all_produits_paginated(0, 20);
+        $total_produits = count_all_produits_actifs();
+    }
+    ?>
+
     <section class="section00">
         <section class="produit_vedetes">
             <div class="box1">
@@ -599,134 +620,59 @@ include('controller/controller_commerce_users.php')
             </div>
 
             <article data-aos="fade-up" data-aos-delay="0" data-aos-duration="1000" data-aos-easing="ease-in-out"
-                data-aos-mirror="true" data-aos-once="false" data-aos-anchor-placement="top-bottom"
-                class="articles  carousel11">
-                <div class="carousel">
-                    <img src="/upload/sac1.jpg" alt="">
-                    <p id="nom">sac a main</p>
-                    <p class="prix">6000<span class="span1">fca</span> <span class="span2">2000fca</span> <span
-                            class="span3">-10%</span></p>
-                    <p id="ville">libreville</p>
-                    <a href="#"><i class="fa-solid fa-cart-shopping fa-xs"></i></span> Ajouter</a>
-                </div>
-
-                <div class="carousel">
-                    <img src="/upload/t-shirt1.jpg" alt="">
-                    <p id="nom">t-shirt hummel</p>
-                    <p class="prix">6000<span class="span1">fca</span> <span class="span2">2000fca</span> <span
-                            class="span3">-10%</span></p>
-                    <p id="ville">libreville</p>
-                    <a href="#"><i class="fa-solid fa-cart-shopping fa-xs"></i></span> Ajouter</a>
-                </div>
-
-                <div class="carousel">
-                    <img src="/upload/montre1.jpg" alt="">
-                    <p id="nom">montre de lux</p>
-                    <p class="prix">6000<span class="span1">fca</span> <span class="span2">2000fca</span> <span
-                            class="span3">-10%</span></p>
-                    <p id="ville">libreville</p>
-                    <a href="#"><i class="fa-solid fa-cart-shopping fa-xs"></i></span> Ajouter</a>
-                </div>
-
-                <div class="carousel">
-                    <img src="/upload/sac2.jpg" alt="">
-                    <p id="nom">sac a main</p>
-                    <p class="prix">6000<span class="span1">fca</span> <span class="span2">2000fca</span> <span
-                            class="span3">-10%</span></p>
-                    <p id="ville">libreville</p>
-                    <a href="#"><i class="fa-solid fa-cart-shopping fa-xs"></i></span> Ajouter</a>
-                </div>
-
-                <div class="carousel">
-                    <img src="/upload/collier.jpg" alt="">
-                    <p id="nom">collier de sortie</p>
-                    <p class="prix">6000<span class="span1">fca</span> <span class="span2">2000fca</span> <span
-                            class="span3">-10%</span></p>
-                    <p id="ville">libreville</p>
-                    <a href="#"><i class="fa-solid fa-cart-shopping fa-xs"></i></span> Ajouter</a>
-                </div>
-
-                <div class="carousel">
-                    <img src="/upload/chaussures 1.jpg" alt="">
-                    <p id="nom">chaussures nike</p>
-                    <p class="prix">6000<span class="span1">fca</span> <span class="span2">2000fca</span> <span
-                            class="span3">-10%</span></p>
-                    <p id="ville">libreville</p>
-                    <a href="#"><i class="fa-solid fa-cart-shopping fa-xs"></i></span> Ajouter</a>
-                </div>
-
-                <div class="carousel">
-                    <img src="/upload/sac1.jpg" alt="">
-                    <p id="nom">sac a main</p>
-                    <p class="prix">6000<span class="span1">fca</span> <span class="span2">2000fca</span> <span
-                            class="span3">-10%</span></p>
-                    <p id="ville">libreville</p>
-                    <a href="#"><i class="fa-solid fa-cart-shopping fa-xs"></i></span> Ajouter</a>
-                </div>
-
-                <div class="carousel">
-                    <img src="/upload/t-shirt1.jpg" alt="">
-                    <p id="nom">t-shirt hummel</p>
-                    <p class="prix">6000<span class="span1">fca</span> <span class="span2">2000fca</span> <span
-                            class="span3">-10%</span></p>
-                    <p id="ville">libreville</p>
-                    <a href="#"><i class="fa-solid fa-cart-shopping fa-xs"></i></span> Ajouter</a>
-                </div>
-
-                <div class="carousel">
-                    <img src="/upload/montre1.jpg" alt="">
-                    <p id="nom">montre de lux</p>
-                    <p class="prix">6000<span class="span1">fca</span> <span class="span2">2000fca</span> <span
-                            class="span3">-10%</span></p>
-                    <p id="ville">libreville</p>
-                    <a href="#"><i class="fa-solid fa-cart-shopping fa-xs"></i></span> Ajouter</a>
-                </div>
-
-                <div class="carousel">
-                    <img src="/upload/sac2.jpg" alt="">
-                    <p id="nom">sac a main</p>
-                    <p class="prix">6000<span class="span1">fca</span> <span class="span2">2000fca</span> <span
-                            class="span3">-10%</span></p>
-                    <p id="ville">libreville</p>
-                    <a href="#"><i class="fa-solid fa-cart-shopping fa-xs"></i></span> Ajouter</a>
-                </div>
-
-                <div class="carousel">
-                    <img src="/upload/collier.jpg" alt="">
-                    <p id="nom">collier de sortie</p>
-                    <p class="prix">6000<span class="span1">fca</span> <span class="span2">2000fca</span> <span
-                            class="span3">-10%</span></p>
-                    <p id="ville">libreville</p>
-                    <a href="#"><i class="fa-solid fa-cart-shopping fa-xs"></i></span> Ajouter</a>
-                </div>
-
-                <div class="carousel">
-                    <img src="/upload/chaussures 1.jpg" alt="">
-                    <p id="nom">chaussures nike</p>
-                    <p class="prix">6000<span class="span1">fca</span> <span class="span2">2000fca</span> <span
-                            class="span3">-10%</span></p>
-                    <p id="ville">libreville</p>
-                    <a href="#"><i class="fa-solid fa-cart-shopping fa-xs"></i></span> Ajouter</a>
-                </div>
-
-                <div class="carousel">
-                    <img src="/upload/collier.jpg" alt="">
-                    <p id="nom">collier de sortie</p>
-                    <p class="prix">6000<span class="span1">fca</span> <span class="span2">2000fca</span> <span
-                            class="span3">-10%</span></p>
-                    <p id="ville">libreville</p>
-                    <a href="#"><i class="fa-solid fa-cart-shopping fa-xs"></i></span> Ajouter</a>
-                </div>
-
-                <div class="carousel">
-                    <img src="/upload/chaussures 1.jpg" alt="">
-                    <p id="nom">chaussures nike</p>
-                    <p class="prix">6000<span class="span1">fca</span> <span class="span2">2000fca</span> <span
-                            class="span3">-10%</span></p>
-                    <p id="ville">libreville</p>
-                    <a href="#"><i class="fa-solid fa-cart-shopping fa-xs"></i></span> Ajouter</a>
-                </div>
+                data-aos-mirror="true" data-aos-once="true" data-aos-anchor-placement="top-bottom"
+                class="articles carousel11" id="produits-container">
+                <?php if (empty($produits_tous)): ?>
+                    <!-- Message si aucun produit -->
+                    <div style="text-align: center; padding: 40px; color: #666; width: 100%;">
+                        <p>Aucun produit disponible pour le moment.</p>
+                    </div>
+                <?php else: ?>
+                    <?php foreach ($produits_tous as $produit): ?>
+                        <?php
+                        // Calculer le prix à afficher
+                        $prix_affichage = !empty($produit['prix_promotion']) && $produit['prix_promotion'] < $produit['prix']
+                            ? $produit['prix_promotion']
+                            : $produit['prix'];
+                        $has_promotion = !empty($produit['prix_promotion']) && $produit['prix_promotion'] < $produit['prix'];
+                        $pourcentage_promo = $has_promotion ? round((($produit['prix'] - $produit['prix_promotion']) / $produit['prix']) * 100) : 0;
+                        ?>
+                        <div class="carousel" data-produit-id="<?php echo $produit['id']; ?>">
+                            <img src="/upload/<?php echo htmlspecialchars($produit['image_principale'] ?? 'produit1.jpg'); ?>"
+                                alt="<?php echo htmlspecialchars($produit['nom'] ?? 'Produit'); ?>"
+                                onerror="this.src='/image/produit1.jpg'">
+                            <p id="nom"><?php echo htmlspecialchars($produit['nom'] ?? 'Produit sans nom'); ?></p>
+                            <p class="prix">
+                                <?php echo number_format($prix_affichage, 0, ',', ' '); ?><span class="span1">fca</span>
+                                <?php if ($has_promotion): ?>
+                                    <span class="span2"><?php echo number_format($produit['prix'], 0, ',', ' '); ?>fca</span>
+                                    <span class="span3">-<?php echo $pourcentage_promo; ?>%</span>
+                                <?php endif; ?>
+                            </p>
+                            <p id="ville">
+                                <?php if (!empty($produit['categorie_nom'])): ?>
+                                    <?php echo htmlspecialchars($produit['categorie_nom']); ?>
+                                <?php endif; ?>
+                                <?php if (!empty($produit['stock'])): ?>
+                                    | Stock: <?php echo $produit['stock']; ?>
+                                <?php endif; ?>
+                            </p>
+                            <a href="produit.php?id=<?php echo $produit['id']; ?>">
+                                <i class="fa-solid fa-cart-shopping fa-xs"></i> Ajouter
+                            </a>
+                        </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
             </article>
+
+            <?php if (!empty($produits_tous) && $total_produits > 20): ?>
+                <div style="text-align: center; margin-top: 30px; padding: 20px;">
+                    <a href="produits.php"
+                        style="padding: 12px 30px; background: #918a44; color: #ffffff; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: background 0.3s ease; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+                        <i class="fas fa-arrow-right"></i> Voir tous les produits (<?php echo $total_produits; ?>)
+                    </a>
+                </div>
+            <?php endif; ?>
         </section>
     </section>
 
@@ -746,7 +692,7 @@ include('controller/controller_commerce_users.php')
                 <h3 class="footer_item_titl">Assistance</h3>
                 <ul class="footer_list">
                     <li class="li footer_list_item">Stockholm, Sweden</li>
-                    <li class="li footer_list_item">service@samba-market.com</li>
+                    <li class="li footer_list_item">service@tresor-afrique.com</li>
                     <li class="li footer_list_item">+46 123 456 78</li>
                     <li class="li footer_list_item">+46 72 345 67</li>
                 </ul>
@@ -754,10 +700,21 @@ include('controller/controller_commerce_users.php')
             <div class="footer_item">
                 <h3 class="footer_item_titl">Utilisateur</h3>
                 <ul class="footer_list">
-                    <li class="li footer_list_item">Compte</li>
-                    <li class="li footer_list_item">Connection / Inscription</li>
-                    <li class="li footer_list_item">Panier</li>
-                    <li class="li footer_list_item">Acheter</li>
+                    <?php if (isset($_SESSION['user_id']) && isset($_SESSION['user_email'])): ?>
+                        <li class="li footer_list_item"><a href="/user/mon-compte.php"
+                                style="color: inherit; text-decoration: none;">Mon compte</a></li>
+                        <li class="li footer_list_item"><a href="/user/deconnexion.php"
+                                style="color: inherit; text-decoration: none;">Déconnexion</a></li>
+                    <?php else: ?>
+                        <li class="li footer_list_item"><a href="/user/connexion.php"
+                                style="color: inherit; text-decoration: none;">Connexion</a></li>
+                        <li class="li footer_list_item"><a href="/user/inscription.php"
+                                style="color: inherit; text-decoration: none;">Inscription</a></li>
+                    <?php endif; ?>
+                    <li class="li footer_list_item"><a href="/panier.php"
+                            style="color: inherit; text-decoration: none;">Panier</a></li>
+                    <li class="li footer_list_item"><a href="/produits.php"
+                            style="color: inherit; text-decoration: none;">Acheter</a></li>
                 </ul>
             </div>
             <div class="footer_item">
@@ -799,7 +756,9 @@ include('controller/controller_commerce_users.php')
                 smartSpeed: 400,
                 stagePadding: 0,
                 nav: true,
-                navText: ['<i class="fa-solid fa-chevron-left"></i>', '<i class="fa-solid fa-chevron-right"></i>']
+                navText: ['<i class="fa-solid fa-chevron-left"></i>',
+                    '<i class="fa-solid fa-chevron-right"></i>'
+                ]
             });
             var carousel2 = $('.slider1').owlCarousel();
             $('.owl-next2').click(function () {
@@ -811,7 +770,7 @@ include('controller/controller_commerce_users.php')
 
             // Initialiser le carrousel 1 avec la portée appropriée
             $('.carousel1').owlCarousel({
-                items: 6,
+                items: 5,
                 loop: true,
                 dots: true,
                 autoplay: true,
@@ -821,7 +780,9 @@ include('controller/controller_commerce_users.php')
                 smartSpeed: 600,
                 stagePadding: 1,
                 nav: true,
-                navText: ['<i class="fa-solid fa-chevron-left"></i>', '<i class="fa-solid fa-chevron-right"></i>']
+                navText: ['<i class="fa-solid fa-chevron-left"></i>',
+                    '<i class="fa-solid fa-chevron-right"></i>'
+                ]
             });
             var carousel1 = $('.carousel1').owlCarousel();
             $('.owl-next').click(function () {
@@ -843,7 +804,9 @@ include('controller/controller_commerce_users.php')
                 smartSpeed: 800,
                 stagePadding: 1,
                 nav: true,
-                navText: ['<i class="fa-solid fa-chevron-left"></i>', '<i class="fa-solid fa-chevron-right"></i>']
+                navText: ['<i class="fa-solid fa-chevron-left"></i>',
+                    '<i class="fa-solid fa-chevron-right"></i>'
+                ]
             });
             var carousel2 = $('.carousel2').owlCarousel();
             $('.owl-next2').click(function () {
@@ -855,7 +818,7 @@ include('controller/controller_commerce_users.php')
 
 
             $('.categorie').owlCarousel({
-                items: 7,
+                items: 5,
                 loop: true,
                 dots: true,
                 autoplay: true,
@@ -865,7 +828,9 @@ include('controller/controller_commerce_users.php')
                 smartSpeed: 600,
                 stagePadding: 20,
                 nav: true,
-                navText: ['<i class="fa-solid fa-chevron-left"></i>', '<i class="fa-solid fa-chevron-right"></i>']
+                navText: ['<i class="fa-solid fa-chevron-left"></i>',
+                    '<i class="fa-solid fa-chevron-right"></i>'
+                ]
             });
             var carousel2 = $('.carousel2').owlCarousel();
             $('.owl-next2').click(function () {
@@ -876,8 +841,6 @@ include('controller/controller_commerce_users.php')
             })
 
         });
-
-
     </script>
 
     <script>

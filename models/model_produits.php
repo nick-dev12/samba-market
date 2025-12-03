@@ -1,0 +1,358 @@
+<?php
+/**
+ * Modèle pour la gestion des produits
+ * Programmation procédurale uniquement
+ */
+
+// Inclusion du fichier de connexion à la BDD
+require_once __DIR__ . '/../conn/conn.php';
+
+/**
+ * Récupère tous les produits
+ * @param string $statut Filtrer par statut (optionnel)
+ * @return array|false Tableau des produits ou False en cas d'erreur
+ */
+function get_all_produits($statut = null) {
+    global $db;
+    
+    try {
+        if ($statut) {
+            $stmt = $db->prepare("
+                SELECT p.*, c.nom as categorie_nom 
+                FROM produits p 
+                LEFT JOIN categories c ON p.categorie_id = c.id 
+                WHERE p.statut = :statut 
+                ORDER BY p.date_creation DESC
+            ");
+            $stmt->execute(['statut' => $statut]);
+        } else {
+            $stmt = $db->prepare("
+                SELECT p.*, c.nom as categorie_nom 
+                FROM produits p 
+                LEFT JOIN categories c ON p.categorie_id = c.id 
+                ORDER BY p.date_creation DESC
+            ");
+            $stmt->execute();
+        }
+        
+        $produits = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        return $produits ? $produits : [];
+    } catch (PDOException $e) {
+        return false;
+    }
+}
+
+/**
+ * Récupère les produits d'une catégorie spécifique
+ * @param int $categorie_id L'ID de la catégorie
+ * @return array|false Tableau des produits ou False en cas d'erreur
+ */
+function get_produits_by_categorie($categorie_id) {
+    global $db;
+    
+    try {
+        $stmt = $db->prepare("
+            SELECT p.*, c.nom as categorie_nom 
+            FROM produits p 
+            LEFT JOIN categories c ON p.categorie_id = c.id 
+            WHERE p.categorie_id = :categorie_id AND p.statut = 'actif'
+            ORDER BY p.date_creation DESC
+        ");
+        $stmt->execute(['categorie_id' => $categorie_id]);
+        $produits = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        return $produits ? $produits : [];
+    } catch (PDOException $e) {
+        return [];
+    }
+}
+
+/**
+ * Récupère un produit par son ID
+ * @param int $id L'ID du produit
+ * @return array|false Les données du produit ou False si non trouvé
+ */
+function get_produit_by_id($id) {
+    global $db;
+    
+    try {
+        $stmt = $db->prepare("
+            SELECT p.*, c.nom as categorie_nom 
+            FROM produits p 
+            LEFT JOIN categories c ON p.categorie_id = c.id 
+            WHERE p.id = :id
+        ");
+        $stmt->execute(['id' => $id]);
+        $produit = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        return $produit ? $produit : false;
+    } catch (PDOException $e) {
+        return false;
+    }
+}
+
+/**
+ * Récupère tous les produits actifs avec pagination
+ * @param int $offset Nombre de produits à ignorer (pour pagination)
+ * @param int $limit Nombre maximum de produits à retourner
+ * @return array Tableau des produits
+ */
+function get_all_produits_paginated($offset = 0, $limit = 20) {
+    global $db;
+    
+    try {
+        $stmt = $db->prepare("
+            SELECT p.*, c.nom as categorie_nom 
+            FROM produits p 
+            LEFT JOIN categories c ON p.categorie_id = c.id 
+            WHERE p.statut = 'actif'
+            ORDER BY p.date_creation DESC
+            LIMIT :limit OFFSET :offset
+        ");
+        
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+        $stmt->execute();
+        $produits = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        return $produits ? $produits : [];
+    } catch (PDOException $e) {
+        return [];
+    }
+}
+
+/**
+ * Compte le nombre total de produits actifs
+ * @return int Nombre total de produits actifs
+ */
+function count_all_produits_actifs() {
+    global $db;
+    
+    try {
+        $stmt = $db->prepare("SELECT COUNT(*) FROM produits WHERE statut = 'actif'");
+        $stmt->execute();
+        return (int) $stmt->fetchColumn();
+    } catch (PDOException $e) {
+        return 0;
+    }
+}
+
+/**
+ * Récupère les produits les plus récents (nouveautés)
+ * @param int $limit Nombre maximum de produits à retourner (par défaut 4)
+ * @return array Tableau des produits les plus récents
+ */
+function get_produits_nouveautes($limit = 4) {
+    global $db;
+    
+    try {
+        $stmt = $db->prepare("
+            SELECT p.*, c.nom as categorie_nom 
+            FROM produits p 
+            LEFT JOIN categories c ON p.categorie_id = c.id 
+            WHERE p.statut = 'actif'
+            ORDER BY p.date_creation DESC, p.date_modification DESC
+            LIMIT :limit
+        ");
+        
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->execute();
+        $produits = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        return $produits ? $produits : [];
+    } catch (PDOException $e) {
+        return [];
+    }
+}
+
+/**
+ * Récupère les produits vedettes (les plus ajoutés au panier et les plus commandés)
+ * @param int $limit Nombre maximum de produits à retourner
+ * @return array Tableau des produits vedettes mélangés aléatoirement
+ */
+function get_produits_vedettes($limit = 20) {
+    global $db;
+    
+    try {
+        // Récupérer les produits les plus ajoutés au panier et les plus commandés
+        $stmt = $db->prepare("
+            SELECT DISTINCT
+                p.*,
+                c.nom as categorie_nom,
+                COALESCE(panier_stats.nb_ajouts_panier, 0) as nb_ajouts_panier,
+                COALESCE(commande_stats.nb_commandes, 0) as nb_commandes,
+                (COALESCE(panier_stats.nb_ajouts_panier, 0) + COALESCE(commande_stats.nb_commandes, 0)) as score_popularite
+            FROM produits p
+            LEFT JOIN categories c ON p.categorie_id = c.id
+            LEFT JOIN (
+                SELECT produit_id, COUNT(*) as nb_ajouts_panier
+                FROM panier
+                GROUP BY produit_id
+            ) panier_stats ON p.id = panier_stats.produit_id
+            LEFT JOIN (
+                SELECT produit_id, COUNT(*) as nb_commandes
+                FROM commande_produits
+                GROUP BY produit_id
+            ) commande_stats ON p.id = commande_stats.produit_id
+            WHERE p.statut = 'actif'
+            HAVING score_popularite > 0
+            ORDER BY score_popularite DESC, p.date_creation DESC
+            LIMIT :limit
+        ");
+        
+        $stmt->bindValue(':limit', $limit * 2, PDO::PARAM_INT); // Récupérer plus pour avoir de la variété
+        $stmt->execute();
+        $produits = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        // Si aucun produit vedette (pas encore de statistiques), récupérer tous les produits actifs
+        if (empty($produits)) {
+            $produits = get_all_produits('actif');
+        }
+        
+        // Mélanger aléatoirement les produits à chaque appel
+        if (!empty($produits)) {
+            // Utiliser une graine basée sur le temps pour varier l'ordre
+            mt_srand(time() + (int)(microtime(true) * 1000000));
+            shuffle($produits);
+            // Limiter au nombre demandé après le mélange
+            $produits = array_slice($produits, 0, $limit);
+        }
+        
+        return $produits ? $produits : [];
+    } catch (PDOException $e) {
+        // En cas d'erreur, retourner tous les produits actifs mélangés
+        $produits = get_all_produits('actif');
+        if (!empty($produits)) {
+            mt_srand(time() + (int)(microtime(true) * 1000000));
+            shuffle($produits);
+            $produits = array_slice($produits, 0, $limit);
+        }
+        return $produits ? $produits : [];
+    }
+}
+
+/**
+ * Crée un nouveau produit
+ * @param array $data Les données du produit
+ * @return int|false L'ID du produit créé ou False en cas d'erreur
+ */
+function create_produit($data) {
+    global $db;
+    
+    try {
+        $stmt = $db->prepare("
+            INSERT INTO produits (
+                nom, description, prix, prix_promotion, stock, categorie_id,
+                image_principale, images, poids, unite, date_creation, statut
+            ) VALUES (
+                :nom, :description, :prix, :prix_promotion, :stock, :categorie_id,
+                :image_principale, :images, :poids, :unite, NOW(), :statut
+            )
+        ");
+        
+        $result = $stmt->execute([
+            'nom' => $data['nom'],
+            'description' => $data['description'],
+            'prix' => $data['prix'],
+            'prix_promotion' => $data['prix_promotion'] ?? null,
+            'stock' => $data['stock'],
+            'categorie_id' => $data['categorie_id'],
+            'image_principale' => $data['image_principale'] ?? null,
+            'images' => $data['images'] ?? null,
+            'poids' => $data['poids'] ?? null,
+            'unite' => $data['unite'] ?? 'unité',
+            'statut' => $data['statut'] ?? 'actif'
+        ]);
+        
+        if ($result) {
+            return $db->lastInsertId();
+        }
+        
+        return false;
+    } catch (PDOException $e) {
+        return false;
+    }
+}
+
+/**
+ * Met à jour un produit
+ * @param int $id L'ID du produit
+ * @param array $data Les nouvelles données du produit
+ * @return bool True en cas de succès, False sinon
+ */
+function update_produit($id, $data) {
+    global $db;
+    
+    try {
+        $stmt = $db->prepare("
+            UPDATE produits SET
+                nom = :nom,
+                description = :description,
+                prix = :prix,
+                prix_promotion = :prix_promotion,
+                stock = :stock,
+                categorie_id = :categorie_id,
+                image_principale = :image_principale,
+                images = :images,
+                poids = :poids,
+                unite = :unite,
+                statut = :statut,
+                date_modification = NOW()
+            WHERE id = :id
+        ");
+        
+        return $stmt->execute([
+            'id' => $id,
+            'nom' => $data['nom'],
+            'description' => $data['description'],
+            'prix' => $data['prix'],
+            'prix_promotion' => $data['prix_promotion'] ?? null,
+            'stock' => $data['stock'],
+            'categorie_id' => $data['categorie_id'],
+            'image_principale' => $data['image_principale'] ?? null,
+            'images' => $data['images'] ?? null,
+            'poids' => $data['poids'] ?? null,
+            'unite' => $data['unite'] ?? 'unité',
+            'statut' => $data['statut'] ?? 'actif'
+        ]);
+    } catch (PDOException $e) {
+        return false;
+    }
+}
+
+/**
+ * Supprime un produit
+ * @param int $id L'ID du produit
+ * @return bool True en cas de succès, False sinon
+ */
+function delete_produit($id) {
+    global $db;
+    
+    try {
+        $stmt = $db->prepare("DELETE FROM produits WHERE id = :id");
+        return $stmt->execute(['id' => $id]);
+    } catch (PDOException $e) {
+        return false;
+    }
+}
+
+/**
+ * Met à jour le statut d'un produit
+ * @param int $id L'ID du produit
+ * @param string $statut Le nouveau statut
+ * @return bool True en cas de succès, False sinon
+ */
+function update_produit_statut($id, $statut) {
+    global $db;
+    
+    try {
+        $stmt = $db->prepare("UPDATE produits SET statut = :statut, date_modification = NOW() WHERE id = :id");
+        return $stmt->execute(['id' => $id, 'statut' => $statut]);
+    } catch (PDOException $e) {
+        return false;
+    }
+}
+
+?>
+
