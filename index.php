@@ -38,6 +38,7 @@ if (file_exists(__DIR__ . '/controllers/controller_commerce_users.php')) {
     <link rel="stylesheet" href="/css/animate.css">
     <link rel="stylesheet" href="/css/animate.min.css">
     <link rel="stylesheet" href="/css/a_style.css">
+    <link rel="stylesheet" href="/css/product-cards.css">
 
 </head>
 
@@ -121,11 +122,9 @@ if (file_exists(__DIR__ . '/controllers/controller_commerce_users.php')) {
 
     <section class="categorie owl-carousel">
         <?php if (empty($categories)): ?>
-            <!-- Catégories par défaut si aucune catégorie n'est configurée -->
-            <div class="item">
-                <img class="img" src="/image/electronique.png" alt="">
-                <p>Électronique</p>
-                <span>0 element</span>
+            <!-- Message si aucune catégorie -->
+            <div style="text-align: center; padding: 40px; color: #666; width: 100%;">
+                <p style="font-size: 16px;">Aucune catégorie disponible pour le moment.</p>
             </div>
         <?php else: ?>
             <?php foreach ($categories as $categorie): ?>
@@ -165,18 +164,15 @@ if (file_exists(__DIR__ . '/controllers/controller_commerce_users.php')) {
             <span></span>
         </div>
 
-        <div class="box2">
-            <span><i class="fa-solid fa-chevron-left"></i></span>
-            <span><i class="fa-solid fa-chevron-right"></i></span>
-        </div>
+
 
         <article data-aos="fade-up" data-aos-delay="0" data-aos-duration="1000" data-aos-easing="ease-in-out"
             data-aos-mirror="true" data-aos-once="false" data-aos-anchor-placement="top-bottom"
             class="articles owl-carousel carousel1">
             <?php if (empty($produits_vedettes)): ?>
                 <!-- Message si aucun produit -->
-                <div class="carousel" style="text-align: center; padding: 40px;">
-                    <p>Aucun produit disponible pour le moment.</p>
+                <div class="carousel" style="text-align: center; padding: 40px; width: 100%;">
+                    <p style="color: #666; font-size: 16px;">Aucun produit publié pour le moment.</p>
                 </div>
             <?php else: ?>
                 <?php foreach ($produits_vedettes as $produit): ?>
@@ -189,27 +185,35 @@ if (file_exists(__DIR__ . '/controllers/controller_commerce_users.php')) {
                     $pourcentage_promo = $has_promotion ? round((($produit['prix'] - $produit['prix_promotion']) / $produit['prix']) * 100) : 0;
                     ?>
                     <div class="carousel">
-                        <img src="/upload/<?php echo htmlspecialchars($produit['image_principale'] ?? 'produit1.jpg'); ?>"
-                            alt="<?php echo htmlspecialchars($produit['nom'] ?? 'Produit'); ?>"
-                            onerror="this.src='/image/produit1.jpg'">
-                        <p id="nom"><?php echo htmlspecialchars($produit['nom'] ?? 'Produit sans nom'); ?></p>
-                        <p class="prix">
-                            <?php echo number_format($prix_affichage, 0, ',', ' '); ?><span class="span1">fca</span>
-                            <?php if ($has_promotion): ?>
-                                <span class="span2"><?php echo number_format($produit['prix'], 0, ',', ' '); ?>fca</span>
-                                <span class="span3">-<?php echo $pourcentage_promo; ?>%</span>
-                            <?php endif; ?>
-                        </p>
-                        <p id="ville">
+                        <div class="image-wrapper">
+                            <img src="/upload/<?php echo htmlspecialchars($produit['image_principale'] ?? 'produit1.jpg'); ?>"
+                                alt="<?php echo htmlspecialchars($produit['nom'] ?? 'Produit'); ?>"
+                                onerror="this.src='/image/produit1.jpg'">
+                        </div>
+                        <div class="produit-content">
+                            <p id="nom"><?php echo htmlspecialchars($produit['nom'] ?? 'Produit sans nom'); ?></p>
                             <?php if (!empty($produit['categorie_nom'])): ?>
-                                <?php echo htmlspecialchars($produit['categorie_nom']); ?>
+                                <p id="ville"><?php echo htmlspecialchars($produit['categorie_nom']); ?></p>
                             <?php endif; ?>
+                            <p class="prix">
+                                <?php if ($has_promotion): ?>
+                                    <span class="span2"><?php echo number_format($produit['prix'], 0, ',', ' '); ?> FCFA</span>
+                                    <span class="prix-promo"><?php echo number_format($prix_affichage, 0, ',', ' '); ?> FCFA</span>
+                                <?php else: ?>
+                                    <?php echo number_format($prix_affichage, 0, ',', ' '); ?><span class="span1"> FCFA</span>
+                                <?php endif; ?>
+                            </p>
                             <?php if (!empty($produit['stock'])): ?>
-                                | Stock: <?php echo $produit['stock']; ?>
+                                <p class="produit-card-stock-info">
+                                    <strong>Stock:</strong> <?php echo $produit['stock']; ?>
+                                    <?php if (!empty($produit['poids'])): ?>
+                                        (<?php echo htmlspecialchars($produit['poids']); ?>)
+                                    <?php endif; ?>
+                                </p>
                             <?php endif; ?>
-                        </p>
+                        </div>
                         <a href="produit.php?id=<?php echo $produit['id']; ?>">
-                            <i class="fa-solid fa-cart-shopping fa-xs"></i> Ajouter
+                            <i class="fa-solid fa-cart-shopping"></i> Ajouter au panier
                         </a>
                     </div>
                 <?php endforeach; ?>
@@ -334,18 +338,15 @@ if (file_exists(__DIR__ . '/controllers/controller_commerce_users.php')) {
             <span></span>
         </div>
 
-        <div class="box2">
-            <span><i class="fa-solid fa-chevron-left"></i></span>
-            <span><i class="fa-solid fa-chevron-right"></i></span>
-        </div>
+
 
         <article data-aos="fade-up" data-aos-delay="0" data-aos-duration="1000" data-aos-easing="ease-in-out"
             data-aos-mirror="true" data-aos-once="false" data-aos-anchor-placement="top-bottom"
             class="articles owl-carousel carousel1">
             <?php if (empty($produits_populaires)): ?>
                 <!-- Message si aucun produit -->
-                <div class="carousel" style="text-align: center; padding: 40px;">
-                    <p>Aucun produit disponible pour le moment.</p>
+                <div class="carousel" style="text-align: center; padding: 40px; width: 100%;">
+                    <p style="color: #666; font-size: 16px;">Aucun produit publié pour le moment.</p>
                 </div>
             <?php else: ?>
                 <?php foreach ($produits_populaires as $produit): ?>
@@ -358,27 +359,36 @@ if (file_exists(__DIR__ . '/controllers/controller_commerce_users.php')) {
                     $pourcentage_promo = $has_promotion ? round((($produit['prix'] - $produit['prix_promotion']) / $produit['prix']) * 100) : 0;
                     ?>
                     <div class="carousel">
-                        <img src="/upload/<?php echo htmlspecialchars($produit['image_principale'] ?? 'produit1.jpg'); ?>"
-                            alt="<?php echo htmlspecialchars($produit['nom'] ?? 'Produit'); ?>"
-                            onerror="this.src='/image/produit1.jpg'">
-                        <p id="nom"><?php echo htmlspecialchars($produit['nom'] ?? 'Produit sans nom'); ?></p>
-                        <p class="prix">
-                            <?php echo number_format($prix_affichage, 0, ',', ' '); ?><span class="span1">fca</span>
-                            <?php if ($has_promotion): ?>
-                                <span class="span2"><?php echo number_format($produit['prix'], 0, ',', ' '); ?>fca</span>
-                                <span class="span3">-<?php echo $pourcentage_promo; ?>%</span>
-                            <?php endif; ?>
-                        </p>
-                        <p id="ville">
+                        <div class="image-wrapper">
+                            <img src="/upload/<?php echo htmlspecialchars($produit['image_principale'] ?? 'produit1.jpg'); ?>"
+                                alt="<?php echo htmlspecialchars($produit['nom'] ?? 'Produit'); ?>"
+                                onerror="this.src='/image/produit1.jpg'">
+                        </div>
+                        <div class="produit-content">
+                            <p id="nom"><?php echo htmlspecialchars($produit['nom'] ?? 'Produit sans nom'); ?></p>
                             <?php if (!empty($produit['categorie_nom'])): ?>
-                                <?php echo htmlspecialchars($produit['categorie_nom']); ?>
+                                <p id="ville"><?php echo htmlspecialchars($produit['categorie_nom']); ?></p>
                             <?php endif; ?>
+                            <p class="prix">
+                                <?php if ($has_promotion): ?>
+                                    <span class="span2"><?php echo number_format($produit['prix'], 0, ',', ' '); ?> FCFA</span>
+                                    <span class="prix-promo"><?php echo number_format($prix_affichage, 0, ',', ' '); ?> FCFA</span>
+
+                                <?php else: ?>
+                                    <?php echo number_format($prix_affichage, 0, ',', ' '); ?><span class="span1"> FCFA</span>
+                                <?php endif; ?>
+                            </p>
                             <?php if (!empty($produit['stock'])): ?>
-                                | Stock: <?php echo $produit['stock']; ?>
+                                <p class="produit-card-stock-info">
+                                    <strong>Stock:</strong> <?php echo $produit['stock']; ?>
+                                    <?php if (!empty($produit['poids'])): ?>
+                                        (<?php echo htmlspecialchars($produit['poids']); ?>)
+                                    <?php endif; ?>
+                                </p>
                             <?php endif; ?>
-                        </p>
+                        </div>
                         <a href="produit.php?id=<?php echo $produit['id']; ?>">
-                            <i class="fa-solid fa-cart-shopping fa-xs"></i> Ajouter
+                            <i class="fa-solid fa-cart-shopping"></i> Ajouter au panier
                         </a>
                     </div>
                 <?php endforeach; ?>
@@ -463,17 +473,22 @@ if (file_exists(__DIR__ . '/controllers/controller_commerce_users.php')) {
     }
     ?>
 
-    <?php if (!empty($produits_cosmetiques)): ?>
-        <section class="produit_vedete">
-            <div class="box1">
-                <span></span>
-                <h1>Tout pour le corps et pour le bien-être</h1>
-                <span></span>
-            </div>
+    <section class="produit_vedete">
+        <div class="box1">
+            <span></span>
+            <h1>Tout pour le corps et pour le bien-être</h1>
+            <span></span>
+        </div>
 
-            <article data-aos="fade-up" data-aos-delay="0" data-aos-duration="1000" data-aos-easing="ease-in-out"
-                data-aos-mirror="true" data-aos-once="false" data-aos-anchor-placement="top-bottom"
-                class="articles owl-carousel carousel1">
+        <article data-aos="fade-up" data-aos-delay="0" data-aos-duration="1000" data-aos-easing="ease-in-out"
+            data-aos-mirror="true" data-aos-once="false" data-aos-anchor-placement="top-bottom"
+            class="articles owl-carousel carousel1">
+            <?php if (empty($produits_cosmetiques)): ?>
+                <!-- Message si aucun produit -->
+                <div class="carousel" style="text-align: center; padding: 40px; width: 100%;">
+                    <p style="color: #666; font-size: 16px;">Aucun produit publié pour le moment.</p>
+                </div>
+            <?php else: ?>
                 <?php foreach ($produits_cosmetiques as $produit): ?>
                     <?php
                     // Calculer le prix à afficher
@@ -484,33 +499,41 @@ if (file_exists(__DIR__ . '/controllers/controller_commerce_users.php')) {
                     $pourcentage_promo = $has_promotion ? round((($produit['prix'] - $produit['prix_promotion']) / $produit['prix']) * 100) : 0;
                     ?>
                     <div class="carousel">
-                        <img src="/upload/<?php echo htmlspecialchars($produit['image_principale'] ?? 'produit1.jpg'); ?>"
-                            alt="<?php echo htmlspecialchars($produit['nom'] ?? 'Produit'); ?>"
-                            onerror="this.src='/image/produit1.jpg'">
-                        <p id="nom"><?php echo htmlspecialchars($produit['nom'] ?? 'Produit sans nom'); ?></p>
-                        <p class="prix">
-                            <?php echo number_format($prix_affichage, 0, ',', ' '); ?><span class="span1">fca</span>
-                            <?php if ($has_promotion): ?>
-                                <span class="span2"><?php echo number_format($produit['prix'], 0, ',', ' '); ?>fca</span>
-                                <span class="span3">-<?php echo $pourcentage_promo; ?>%</span>
-                            <?php endif; ?>
-                        </p>
-                        <p id="ville">
+                        <div class="image-wrapper">
+                            <img src="/upload/<?php echo htmlspecialchars($produit['image_principale'] ?? 'produit1.jpg'); ?>"
+                                alt="<?php echo htmlspecialchars($produit['nom'] ?? 'Produit'); ?>"
+                                onerror="this.src='/image/produit1.jpg'">
+                        </div>
+                        <div class="produit-content">
+                            <p id="nom"><?php echo htmlspecialchars($produit['nom'] ?? 'Produit sans nom'); ?></p>
                             <?php if (!empty($produit['categorie_nom'])): ?>
-                                <?php echo htmlspecialchars($produit['categorie_nom']); ?>
+                                <p id="ville"><?php echo htmlspecialchars($produit['categorie_nom']); ?></p>
                             <?php endif; ?>
+                            <p class="prix">
+                                <?php if ($has_promotion): ?>
+                                    <span class="span2"><?php echo number_format($produit['prix'], 0, ',', ' '); ?> FCFA</span>
+                                    <span class="prix-promo"><?php echo number_format($prix_affichage, 0, ',', ' '); ?> FCFA</span>
+                                <?php else: ?>
+                                    <?php echo number_format($prix_affichage, 0, ',', ' '); ?><span class="span1"> FCFA</span>
+                                <?php endif; ?>
+                            </p>
                             <?php if (!empty($produit['stock'])): ?>
-                                | Stock: <?php echo $produit['stock']; ?>
+                                <p class="produit-card-stock-info">
+                                    <strong>Stock:</strong> <?php echo $produit['stock']; ?>
+                                    <?php if (!empty($produit['poids'])): ?>
+                                        (<?php echo htmlspecialchars($produit['poids']); ?>)
+                                    <?php endif; ?>
+                                </p>
                             <?php endif; ?>
-                        </p>
+                        </div>
                         <a href="produit.php?id=<?php echo $produit['id']; ?>">
-                            <i class="fa-solid fa-cart-shopping fa-xs"></i> Ajouter
+                            <i class="fa-solid fa-cart-shopping"></i> Ajouter au panier
                         </a>
                     </div>
                 <?php endforeach; ?>
-            </article>
-        </section>
-    <?php endif; ?>
+            <?php endif; ?>
+        </article>
+    </section>
 
 
 
@@ -527,16 +550,21 @@ if (file_exists(__DIR__ . '/controllers/controller_commerce_users.php')) {
     $gallery_classes = ['gallery_item_1', 'gallery_item_2', 'gallery_item_3', 'gallery_item_4'];
     ?>
 
-    <?php if (!empty($produits_nouveautes)): ?>
-        <section class="section0">
-            <div class="container">
-                <div class="section_category">
-                    <p class="section_category_p">En vedette</p>
-                </div>
-                <div class="section_header">
-                    <h3 class="section_title">Nouveautés</h3>
-                </div>
-                <div class="gallery">
+    <section class="section0">
+        <div class="container">
+            <div class="section_category">
+                <p class="section_category_p">En vedette</p>
+            </div>
+            <div class="section_header">
+                <h3 class="section_title">Nouveautés</h3>
+            </div>
+            <div class="gallery">
+                <?php if (empty($produits_nouveautes)): ?>
+                    <!-- Message si aucun produit -->
+                    <div style="text-align: center; padding: 40px; color: #666; width: 100%; grid-column: 1 / -1;">
+                        <p style="font-size: 16px;">Aucun produit publié pour le moment.</p>
+                    </div>
+                <?php else: ?>
                     <?php foreach ($produits_nouveautes as $index => $produit): ?>
                         <?php
                         // Déterminer le chemin de l'image
@@ -576,10 +604,10 @@ if (file_exists(__DIR__ . '/controllers/controller_commerce_users.php')) {
                             </div>
                         </div>
                     <?php endforeach; ?>
-                </div>
+                <?php endif; ?>
             </div>
-        </section>
-    <?php endif; ?>
+        </div>
+    </section>
 
     <section class="section0">
         <div class="container services_container">
@@ -625,7 +653,7 @@ if (file_exists(__DIR__ . '/controllers/controller_commerce_users.php')) {
                 <?php if (empty($produits_tous)): ?>
                     <!-- Message si aucun produit -->
                     <div style="text-align: center; padding: 40px; color: #666; width: 100%;">
-                        <p>Aucun produit disponible pour le moment.</p>
+                        <p style="font-size: 16px;">Aucun produit publié pour le moment.</p>
                     </div>
                 <?php else: ?>
                     <?php foreach ($produits_tous as $produit): ?>
@@ -638,27 +666,37 @@ if (file_exists(__DIR__ . '/controllers/controller_commerce_users.php')) {
                         $pourcentage_promo = $has_promotion ? round((($produit['prix'] - $produit['prix_promotion']) / $produit['prix']) * 100) : 0;
                         ?>
                         <div class="carousel" data-produit-id="<?php echo $produit['id']; ?>">
-                            <img src="/upload/<?php echo htmlspecialchars($produit['image_principale'] ?? 'produit1.jpg'); ?>"
-                                alt="<?php echo htmlspecialchars($produit['nom'] ?? 'Produit'); ?>"
-                                onerror="this.src='/image/produit1.jpg'">
-                            <p id="nom"><?php echo htmlspecialchars($produit['nom'] ?? 'Produit sans nom'); ?></p>
-                            <p class="prix">
-                                <?php echo number_format($prix_affichage, 0, ',', ' '); ?><span class="span1">fca</span>
-                                <?php if ($has_promotion): ?>
-                                    <span class="span2"><?php echo number_format($produit['prix'], 0, ',', ' '); ?>fca</span>
-                                    <span class="span3">-<?php echo $pourcentage_promo; ?>%</span>
-                                <?php endif; ?>
-                            </p>
-                            <p id="ville">
+                            <div class="image-wrapper">
+                                <img src="/upload/<?php echo htmlspecialchars($produit['image_principale'] ?? 'produit1.jpg'); ?>"
+                                    alt="<?php echo htmlspecialchars($produit['nom'] ?? 'Produit'); ?>"
+                                    onerror="this.src='/image/produit1.jpg'">
+                            </div>
+                            <div class="produit-content">
+                                <p id="nom"><?php echo htmlspecialchars($produit['nom'] ?? 'Produit sans nom'); ?></p>
                                 <?php if (!empty($produit['categorie_nom'])): ?>
-                                    <?php echo htmlspecialchars($produit['categorie_nom']); ?>
+                                    <p id="ville"><?php echo htmlspecialchars($produit['categorie_nom']); ?></p>
                                 <?php endif; ?>
+                                <p class="prix">
+                                    <?php if ($has_promotion): ?>
+                                        <span class="span2"><?php echo number_format($produit['prix'], 0, ',', ' '); ?> FCFA</span>
+                                        <span class="prix-promo"><?php echo number_format($prix_affichage, 0, ',', ' '); ?>
+                                            FCFA</span>
+
+                                    <?php else: ?>
+                                        <?php echo number_format($prix_affichage, 0, ',', ' '); ?><span class="span1"> FCFA</span>
+                                    <?php endif; ?>
+                                </p>
                                 <?php if (!empty($produit['stock'])): ?>
-                                    | Stock: <?php echo $produit['stock']; ?>
+                                    <p class="produit-card-stock-info">
+                                        <strong>Stock:</strong> <?php echo $produit['stock']; ?>
+                                        <?php if (!empty($produit['poids'])): ?>
+                                            (<?php echo htmlspecialchars($produit['poids']); ?>)
+                                        <?php endif; ?>
+                                    </p>
                                 <?php endif; ?>
-                            </p>
+                            </div>
                             <a href="produit.php?id=<?php echo $produit['id']; ?>">
-                                <i class="fa-solid fa-cart-shopping fa-xs"></i> Ajouter
+                                <i class="fa-solid fa-cart-shopping"></i> Ajouter au panier
                             </a>
                         </div>
                     <?php endforeach; ?>
@@ -679,62 +717,7 @@ if (file_exists(__DIR__ . '/controllers/controller_commerce_users.php')) {
 
 
 
-    <footer class="footer">
-        <div class="container footer_container">
-            <div class="footer_item">
-                <a href="#" class="footer_logo">Exclusive</a>
-                <div class="footer_p">
-                    Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                    Exercitationem fuga harum voluptate?
-                </div>
-            </div>
-            <div class="footer_item">
-                <h3 class="footer_item_titl">Assistance</h3>
-                <ul class="footer_list">
-                    <li class="li footer_list_item">Stockholm, Sweden</li>
-                    <li class="li footer_list_item">service@tresor-afrique.com</li>
-                    <li class="li footer_list_item">+46 123 456 78</li>
-                    <li class="li footer_list_item">+46 72 345 67</li>
-                </ul>
-            </div>
-            <div class="footer_item">
-                <h3 class="footer_item_titl">Utilisateur</h3>
-                <ul class="footer_list">
-                    <?php if (isset($_SESSION['user_id']) && isset($_SESSION['user_email'])): ?>
-                        <li class="li footer_list_item"><a href="/user/mon-compte.php"
-                                style="color: inherit; text-decoration: none;">Mon compte</a></li>
-                        <li class="li footer_list_item"><a href="/user/deconnexion.php"
-                                style="color: inherit; text-decoration: none;">Déconnexion</a></li>
-                    <?php else: ?>
-                        <li class="li footer_list_item"><a href="/user/connexion.php"
-                                style="color: inherit; text-decoration: none;">Connexion</a></li>
-                        <li class="li footer_list_item"><a href="/user/inscription.php"
-                                style="color: inherit; text-decoration: none;">Inscription</a></li>
-                    <?php endif; ?>
-                    <li class="li footer_list_item"><a href="/panier.php"
-                            style="color: inherit; text-decoration: none;">Panier</a></li>
-                    <li class="li footer_list_item"><a href="/produits.php"
-                            style="color: inherit; text-decoration: none;">Acheter</a></li>
-                </ul>
-            </div>
-            <div class="footer_item">
-                <h3 class="footer_item_titl">Condition generale</h3>
-                <ul class="footer_list">
-                    <li class="li footer_list_item">Politique de confidentialité</li>
-                    <li class="li footer_list_item">Conditions d'utilisation</li>
-                    <li class="li footer_list_item">FAQ</li>
-                    <li class="li footer_list_item">Contact</li>
-                </ul>
-            </div>
-        </div>
-        <div class="footer_bottom">
-            <div class="container footer_bottom_container">
-                <p class="footer_copy">
-                    Copyright Exclusive 2023. All right reserved
-                </p>
-            </div>
-        </div>
-    </footer>
+    <?php include('footer.php') ?>
 
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script src="/js/owl.carousel.min.js"></script>
@@ -782,7 +765,39 @@ if (file_exists(__DIR__ . '/controllers/controller_commerce_users.php')) {
                 nav: true,
                 navText: ['<i class="fa-solid fa-chevron-left"></i>',
                     '<i class="fa-solid fa-chevron-right"></i>'
-                ]
+                ],
+                responsive: {
+                    0: {
+                        items: 1,
+                        stagePadding: 10,
+                        nav: false,
+                        dots: true
+                    },
+                    576: {
+                        items: 2,
+                        stagePadding: 15,
+                        nav: true,
+                        dots: true
+                    },
+                    768: {
+                        items: 3,
+                        stagePadding: 15,
+                        nav: true,
+                        dots: true
+                    },
+                    992: {
+                        items: 4,
+                        stagePadding: 20,
+                        nav: true,
+                        dots: true
+                    },
+                    1200: {
+                        items: 5,
+                        stagePadding: 1,
+                        nav: true,
+                        dots: true
+                    }
+                }
             });
             var carousel1 = $('.carousel1').owlCarousel();
             $('.owl-next').click(function () {
@@ -830,7 +845,39 @@ if (file_exists(__DIR__ . '/controllers/controller_commerce_users.php')) {
                 nav: true,
                 navText: ['<i class="fa-solid fa-chevron-left"></i>',
                     '<i class="fa-solid fa-chevron-right"></i>'
-                ]
+                ],
+                responsive: {
+                    0: {
+                        items: 2,
+                        stagePadding: 10,
+                        nav: false,
+                        dots: true
+                    },
+                    576: {
+                        items: 2,
+                        stagePadding: 15,
+                        nav: true,
+                        dots: true
+                    },
+                    768: {
+                        items: 3,
+                        stagePadding: 15,
+                        nav: true,
+                        dots: true
+                    },
+                    992: {
+                        items: 4,
+                        stagePadding: 20,
+                        nav: true,
+                        dots: true
+                    },
+                    1200: {
+                        items: 5,
+                        stagePadding: 20,
+                        nav: true,
+                        dots: true
+                    }
+                }
             });
             var carousel2 = $('.carousel2').owlCarousel();
             $('.owl-next2').click(function () {

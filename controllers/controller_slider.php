@@ -26,15 +26,17 @@ function upload_slider_image($file_input_name, $current_image = null) {
     }
     
     // Vérifier le type de fichier
-    $allowed_types = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/avif'];
+    $allowed_types = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/avif', 'image/gif'];
     $file_type = $file['type'];
     
     if (!in_array($file_type, $allowed_types)) {
+        $_SESSION['upload_error'] = 'Type de fichier non autorisé. Formats acceptés: JPEG, JPG, PNG, GIF, WEBP, AVIF';
         return false;
     }
     
-    // Vérifier la taille (max 5MB)
-    if ($file['size'] > 5000000) {
+    // Vérifier la taille (max 50MB pour permettre les images 4K)
+    if ($file['size'] > 52428800) { // 50MB
+        $_SESSION['upload_error'] = 'Le fichier est trop volumineux. Taille maximale: 50MB';
         return false;
     }
     
@@ -91,7 +93,13 @@ function process_add_slide() {
         if (!isset($_FILES['image']) || $_FILES['image']['error'] !== UPLOAD_ERR_OK) {
             $errors[] = 'L\'image est obligatoire.';
         } else {
-            $errors[] = 'Erreur lors de l\'upload de l\'image.';
+            // Vérifier s'il y a un message d'erreur spécifique
+            if (isset($_SESSION['upload_error'])) {
+                $errors[] = $_SESSION['upload_error'];
+                unset($_SESSION['upload_error']);
+            } else {
+                $errors[] = 'Erreur lors de l\'upload de l\'image. Vérifiez que le fichier est au format JPEG, JPG, PNG, GIF, WEBP ou AVIF et ne dépasse pas 50MB.';
+            }
         }
     }
     
@@ -155,8 +163,21 @@ function process_update_slide($slide_id) {
     // Upload de l'image (si nouvelle image fournie)
     $image = upload_slider_image('image', $current_slide['image']);
     if (!$image) {
-        // Si pas de nouvelle image, garder l'ancienne
-        $image = $current_slide['image'];
+        // Vérifier si une nouvelle image a été fournie mais qu'il y a eu une erreur
+        if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+            // Il y a eu une erreur lors de l'upload
+            if (isset($_SESSION['upload_error'])) {
+                $errors[] = $_SESSION['upload_error'];
+                unset($_SESSION['upload_error']);
+            } else {
+                $errors[] = 'Erreur lors de l\'upload de l\'image. Vérifiez que le fichier est au format JPEG, JPG, PNG, GIF, WEBP ou AVIF et ne dépasse pas 50MB.';
+            }
+            // Garder l'ancienne image en cas d'erreur
+            $image = $current_slide['image'];
+        } else {
+            // Pas de nouvelle image fournie, garder l'ancienne
+            $image = $current_slide['image'];
+        }
     }
     
     // Si aucune erreur, mettre à jour le slide

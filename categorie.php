@@ -60,156 +60,9 @@ if (file_exists(__DIR__ . '/controllers/controller_commerce_users.php')) {
     <link rel="stylesheet" href="/css/animate.css">
     <link rel="stylesheet" href="/css/animate.min.css">
     <link rel="stylesheet" href="/css/a_style.css">
+    <link rel="stylesheet" href="/css/product-cards.css">
     <style>
     /* Styles personnalisés pour les cartes produits */
-    .produit_vedetes .articles .carousel {
-        height: auto;
-        display: flex;
-        flex-direction: column;
-        padding-bottom: 60px;
-    }
-
-    .produit_vedetes .articles .carousel .produit-content {
-        padding: 5px 10px;
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-    }
-
-    .produit_vedetes .articles .carousel #nom {
-        font-weight: 700;
-        font-size: 16px;
-        color: #000000;
-        margin-bottom: 6px;
-        line-height: 1.3;
-    }
-
-    .produit_vedetes .articles .carousel .categorie-badge {
-        display: inline-block;
-        font-size: 11px;
-        color: #918a44;
-        background-color: #f0e9e9;
-        padding: 3px 8px;
-        border-radius: 4px;
-        margin-bottom: 8px;
-        font-weight: 500;
-        text-transform: capitalize;
-        width: fit-content;
-    }
-
-    .produit_vedetes .articles .carousel .prix-container {
-        margin-bottom: 8px;
-    }
-
-    .produit_vedetes .articles .carousel .prix-principal {
-        font-size: 18px;
-        font-weight: 700;
-        color: #6b2f20;
-        margin-bottom: 4px;
-    }
-
-    .produit_vedetes .articles .carousel .prix-promo {
-        font-size: 14px;
-        color: #c26638;
-        font-weight: 600;
-    }
-
-    .produit_vedetes .articles .carousel .prix-original {
-        font-size: 13px;
-        color: #737373;
-        text-decoration: line-through;
-        margin-right: 8px;
-    }
-
-    .produit_vedetes .articles .carousel .promo-badge {
-        display: inline-block;
-        background-color: #c26638;
-        color: #ffffff;
-        font-size: 11px;
-        font-weight: 600;
-        padding: 2px 6px;
-        border-radius: 3px;
-        margin-left: 5px;
-    }
-
-    .produit_vedetes .articles .carousel .info-stock {
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
-        margin-bottom: 10px;
-        padding: 8px;
-        background-color: #f9f9f9;
-        border-radius: 5px;
-        border-left: 3px solid #918a44;
-    }
-
-    .produit_vedetes .articles .carousel .stock-item {
-        font-size: 12px;
-        color: #484848;
-        display: flex;
-        align-items: center;
-        gap: 5px;
-    }
-
-    .produit_vedetes .articles .carousel .stock-item strong {
-        color: #6b2f20;
-        font-weight: 600;
-        min-width: 60px;
-    }
-
-    .produit_vedetes .articles .carousel .stock-item .stock-value {
-        color: #6b2f20;
-        font-weight: 700;
-    }
-
-    .produit_vedetes .articles .carousel .poids-item {
-        font-size: 12px;
-        color: #484848;
-        display: flex;
-        align-items: center;
-        gap: 5px;
-    }
-
-    .produit_vedetes .articles .carousel .poids-item strong {
-        color: #918a44;
-        font-weight: 600;
-        min-width: 60px;
-    }
-
-    .produit_vedetes .articles .carousel .poids-item .poids-value {
-        color: #918a44;
-        font-weight: 700;
-    }
-
-    .produit_vedetes .articles .carousel a {
-        position: absolute;
-        bottom: 10px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: calc(100% - 24px);
-        padding: 8px 15px;
-        background-color: #6b2f20;
-        color: white;
-        text-decoration: none;
-        font-size: 14px;
-        border-radius: 8px;
-        text-align: center;
-        transition: all 0.3s ease;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 6px;
-    }
-
-    .produit_vedetes .articles .carousel a:hover {
-        background-color: #918a44;
-        transform: translateX(-50%) translateY(-2px);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
-
-    .produit_vedetes .articles .carousel a i {
-        font-size: 12px;
-    }
     </style>
 </head>
 
@@ -226,10 +79,10 @@ if (file_exists(__DIR__ . '/controllers/controller_commerce_users.php')) {
             <?php if (empty($produits)): ?>
             <div style="text-align: center; padding: 40px; color: #666;">
                 <i class="fas fa-box-open" style="font-size: 48px; margin-bottom: 20px; opacity: 0.5;"></i>
-                <p style="font-size: 18px;">Aucun produit disponible dans cette catégorie pour le moment.</p>
+                <p style="font-size: 16px;">Aucun produit publié pour le moment.</p>
                 <a href="index.php"
-                    style="display: inline-block; margin-top: 20px; padding: 10px 20px; background-color: #6b2b23; color: white; text-decoration: none; border-radius: 5px;">
-                    Retour à l'accueil
+                    style="display: inline-block; margin-top: 20px; padding: 10px 20px; background-color: #918a44; color: white; text-decoration: none; border-radius: 5px; transition: background 0.3s ease;">
+                    <i class="fas fa-arrow-left"></i> Retour à l'accueil
                 </a>
             </div>
             <?php else: ?>
@@ -248,47 +101,34 @@ if (file_exists(__DIR__ . '/controllers/controller_commerce_users.php')) {
                         }
                         ?>
                 <div class="carousel">
-                    <img src="/upload/<?php echo htmlspecialchars($produit['image_principale']); ?>"
-                        alt="<?php echo htmlspecialchars($produit['nom']); ?>" onerror="this.src='/image/produit1.jpg'">
-
-                    <div class="produit-content">
-                        <!-- Nom du produit -->
-                        <p id="nom"><?php echo htmlspecialchars($produit['nom']); ?></p>
-
-                        <!-- Badge catégorie -->
-                        <span class="categorie-badge"><?php echo htmlspecialchars($produit['categorie_nom']); ?></span>
-
-                        <!-- Prix -->
-                        <div class="prix-container">
-                            <?php if ($has_promo): ?>
-                            <div class="prix-principal">
-                                <span class="prix-original"><?php echo $prix_principal; ?> FCFA</span>
-                                <span class="prix-promo"><?php echo $prix_promo_value; ?> FCFA</span>
-                                <span class="promo-badge">-<?php echo $pourcentage_reduction; ?>%</span>
-                            </div>
-                            <?php else: ?>
-                            <div class="prix-principal">
-                                <?php echo $prix_principal; ?> FCFA
-                            </div>
-                            <?php endif; ?>
-                        </div>
-
-                        <!-- Informations stock et poids -->
-                        <div class="info-stock">
-                            <div class="stock-item">
-                                <strong>Stock:</strong>
-                                <span class="stock-value"><?php echo $produit['stock']; ?></span>
-                            </div>
-                            <?php if (!empty($produit['poids'])): ?>
-                            <div class="poids-item">
-                                <strong>Poids:</strong>
-                                <span class="poids-value"><?php echo htmlspecialchars($produit['poids']); ?></span>
-                            </div>
-                            <?php endif; ?>
-                        </div>
+                    <div class="image-wrapper">
+                        <img src="/upload/<?php echo htmlspecialchars($produit['image_principale']); ?>"
+                            alt="<?php echo htmlspecialchars($produit['nom']); ?>"
+                            onerror="this.src='/image/produit1.jpg'">
                     </div>
-
-                    <!-- Bouton Ajouter -->
+                    <div class="produit-content">
+                        <p id="nom"><?php echo htmlspecialchars($produit['nom']); ?></p>
+                        <?php if (!empty($produit['categorie_nom'])): ?>
+                        <p id="ville"><?php echo htmlspecialchars($produit['categorie_nom']); ?></p>
+                        <?php endif; ?>
+                        <p class="prix">
+                            <?php if ($has_promo): ?>
+                            <span class="span2"><?php echo $prix_principal; ?> FCFA</span>
+                            <span class="prix-promo"><?php echo $prix_promo_value; ?> FCFA</span>
+                            <span class="span3">-<?php echo $pourcentage_reduction; ?>%</span>
+                            <?php else: ?>
+                            <?php echo $prix_principal; ?><span class="span1"> FCFA</span>
+                            <?php endif; ?>
+                        </p>
+                        <?php if (!empty($produit['stock'])): ?>
+                        <p class="produit-card-stock-info">
+                            <strong>Stock:</strong> <?php echo $produit['stock']; ?>
+                            <?php if (!empty($produit['poids'])): ?>
+                            (<?php echo htmlspecialchars($produit['poids']); ?>)
+                            <?php endif; ?>
+                        </p>
+                        <?php endif; ?>
+                    </div>
                     <a href="produit.php?id=<?php echo $produit['id']; ?>">
                         <i class="fa-solid fa-cart-shopping"></i> Ajouter au panier
                     </a>

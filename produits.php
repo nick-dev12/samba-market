@@ -35,6 +35,7 @@ if (file_exists(__DIR__ . '/controllers/controller_commerce_users.php')) {
     <link href="https://fonts.googleapis.com/css2?family=Almarai&family=Rozha+One&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/a_style.css">
+    <link rel="stylesheet" href="/css/product-cards.css">
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
     <style>
         .produits-page-header {
@@ -150,7 +151,7 @@ if (file_exists(__DIR__ . '/controllers/controller_commerce_users.php')) {
                         <!-- Message si aucun produit -->
                         <div style="text-align: center; padding: 40px; color: #666; width: 100%;">
                             <i class="fas fa-box-open" style="font-size: 48px; margin-bottom: 20px; opacity: 0.5;"></i>
-                            <p>Aucun produit disponible pour le moment.</p>
+                            <p style="font-size: 16px;">Aucun produit publié pour le moment.</p>
                         </div>
                     <?php else: ?>
                         <?php foreach ($produits_tous as $produit): ?>
@@ -163,27 +164,38 @@ if (file_exists(__DIR__ . '/controllers/controller_commerce_users.php')) {
                             $pourcentage_promo = $has_promotion ? round((($produit['prix'] - $produit['prix_promotion']) / $produit['prix']) * 100) : 0;
                             ?>
                             <div class="carousel" data-produit-id="<?php echo $produit['id']; ?>">
-                                <img src="/upload/<?php echo htmlspecialchars($produit['image_principale'] ?? 'produit1.jpg'); ?>"
-                                    alt="<?php echo htmlspecialchars($produit['nom'] ?? 'Produit'); ?>"
-                                    onerror="this.src='/image/produit1.jpg'">
-                                <p id="nom"><?php echo htmlspecialchars($produit['nom'] ?? 'Produit sans nom'); ?></p>
-                                <p class="prix">
-                                    <?php echo number_format($prix_affichage, 0, ',', ' '); ?><span class="span1">fca</span>
-                                    <?php if ($has_promotion): ?>
-                                        <span class="span2"><?php echo number_format($produit['prix'], 0, ',', ' '); ?>fca</span>
-                                        <span class="span3">-<?php echo $pourcentage_promo; ?>%</span>
-                                    <?php endif; ?>
-                                </p>
-                                <p id="ville">
+                                <div class="image-wrapper">
+                                    <img src="/upload/<?php echo htmlspecialchars($produit['image_principale'] ?? 'produit1.jpg'); ?>"
+                                        alt="<?php echo htmlspecialchars($produit['nom'] ?? 'Produit'); ?>"
+                                        onerror="this.src='/image/produit1.jpg'">
+                                </div>
+                                <div class="produit-content">
+                                    <p id="nom"><?php echo htmlspecialchars($produit['nom'] ?? 'Produit sans nom'); ?></p>
                                     <?php if (!empty($produit['categorie_nom'])): ?>
-                                        <?php echo htmlspecialchars($produit['categorie_nom']); ?>
+                                        <p id="ville"><?php echo htmlspecialchars($produit['categorie_nom']); ?></p>
                                     <?php endif; ?>
+                                    <p class="prix">
+                                        <?php if ($has_promotion): ?>
+                                            <span class="span2"><?php echo number_format($produit['prix'], 0, ',', ' '); ?>
+                                                FCFA</span>
+                                            <span class="prix-promo"><?php echo number_format($prix_affichage, 0, ',', ' '); ?>
+                                                FCFA</span>
+                                        <?php else: ?>
+                                            <?php echo number_format($prix_affichage, 0, ',', ' '); ?><span class="span1">
+                                                FCFA</span>
+                                        <?php endif; ?>
+                                    </p>
                                     <?php if (!empty($produit['stock'])): ?>
-                                        | Stock: <?php echo $produit['stock']; ?>
+                                        <p class="produit-card-stock-info">
+                                            <strong>Stock:</strong> <?php echo $produit['stock']; ?>
+                                            <?php if (!empty($produit['poids'])): ?>
+                                                (<?php echo htmlspecialchars($produit['poids']); ?>)
+                                            <?php endif; ?>
+                                        </p>
                                     <?php endif; ?>
-                                </p>
+                                </div>
                                 <a href="produit.php?id=<?php echo $produit['id']; ?>">
-                                    <i class="fa-solid fa-cart-shopping fa-xs"></i> Ajouter
+                                    <i class="fa-solid fa-cart-shopping"></i> Ajouter au panier
                                 </a>
                             </div>
                         <?php endforeach; ?>
@@ -248,18 +260,38 @@ if (file_exists(__DIR__ . '/controllers/controller_commerce_users.php')) {
                                 categorieStock += (categorieStock ? ' | ' : '') + 'Stock: ' + produit.stock;
                             }
 
+                            let prixHTML = '';
+                            if (produit.has_promotion) {
+                                prixHTML = `<span class="span2">${formatNumber(produit.prix)} FCFA</span>
+                                            <span class="prix-promo">${formatNumber(produit.prix_affichage)} FCFA</span>
+                                            <span class="span3">-${produit.pourcentage_promo}%</span>`;
+                            } else {
+                                prixHTML =
+                                    `${formatNumber(produit.prix_affichage)}<span class="span1"> FCFA</span>`;
+                            }
+
+                            let stockHTML = '';
+                            if (produit.stock) {
+                                stockHTML = `<p class="produit-card-stock-info">
+                                    <strong>Stock:</strong> ${produit.stock}
+                                    ${produit.poids ? `(${escapeHtml(produit.poids)})` : ''}
+                                </p>`;
+                            }
+
                             div.innerHTML = `
-                                <img src="/upload/${produit.image_principale}" 
-                                     alt="${escapeHtml(produit.nom)}"
-                                     onerror="this.src='/image/produit1.jpg'">
-                                <p id="nom">${escapeHtml(produit.nom)}</p>
-                                <p class="prix">
-                                    ${formatNumber(produit.prix_affichage)}<span class="span1">fca</span>
-                                    ${promoHTML}
-                                </p>
-                                <p id="ville">${escapeHtml(categorieStock)}</p>
+                                <div class="image-wrapper">
+                                    <img src="/upload/${produit.image_principale}" 
+                                         alt="${escapeHtml(produit.nom)}"
+                                         onerror="this.src='/image/produit1.jpg'">
+                                </div>
+                                <div class="produit-content">
+                                    <p id="nom">${escapeHtml(produit.nom)}</p>
+                                    ${produit.categorie_nom ? `<p id="ville">${escapeHtml(produit.categorie_nom)}</p>` : ''}
+                                    <p class="prix">${prixHTML}</p>
+                                    ${stockHTML}
+                                </div>
                                 <a href="produit.php?id=${produit.id}">
-                                    <i class="fa-solid fa-cart-shopping fa-xs"></i> Ajouter
+                                    <i class="fa-solid fa-cart-shopping"></i> Ajouter au panier
                                 </a>
                             `;
 

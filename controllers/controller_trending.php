@@ -94,13 +94,13 @@ function upload_trending_image($file) {
     $file_type = mime_content_type($file['tmp_name']);
     
     if (!in_array($file_type, $allowed_types)) {
-        return ['success' => false, 'filename' => null, 'message' => 'Type de fichier non autorisé. Formats acceptés: JPG, PNG, GIF, WEBP'];
+        return ['success' => false, 'filename' => null, 'message' => 'Type de fichier non autorisé. Formats acceptés: JPEG, JPG, PNG, GIF, WEBP'];
     }
     
-    // Vérifier la taille (max 5MB)
-    $max_size = 5 * 1024 * 1024; // 5MB
+    // Vérifier la taille (max 50MB pour permettre les images 4K)
+    $max_size = 50 * 1024 * 1024; // 50MB
     if ($file['size'] > $max_size) {
-        return ['success' => false, 'filename' => null, 'message' => 'Le fichier est trop volumineux. Taille maximale: 5MB'];
+        return ['success' => false, 'filename' => null, 'message' => 'Le fichier est trop volumineux. Taille maximale: 50MB'];
     }
     
     // Générer un nom de fichier unique

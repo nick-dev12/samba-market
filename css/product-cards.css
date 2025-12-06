@@ -1,0 +1,346 @@
+/**
+ * Styles pour les cartes de produits - Design moderne et professionnel
+ * Basé sur le design de l'image fournie
+ */
+
+/* Container pour les cartes de produits */
+.produits-container,
+.produit_vedete .articles,
+.produit_vedetes .articles,
+.carousel11 {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Carte de produit - Design moderne */
+.produit_vedete .articles .carousel,
+.produit_vedetes .articles .carousel,
+.carousel11 .carousel {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    overflow: hidden;
+    width: 250px;
+    min-width: 250px;
+    max-width: 250px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+}
+
+.produit_vedete .articles .carousel:hover,
+.produit_vedetes .articles .carousel:hover,
+.carousel11 .carousel:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    transform: translateY(-4px);
+}
+
+/* Section image avec badge */
+.produit_vedete .articles .carousel .image-wrapper,
+.produit_vedetes .articles .carousel .image-wrapper,
+.carousel11 .carousel .image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 150px;
+    overflow: hidden;
+    background: #f9f9f9;
+}
+
+.produit_vedete .articles .carousel img,
+.produit_vedetes .articles .carousel img,
+.carousel11 .carousel img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Badge statut (ACTIF) - en haut à droite */
+.produit-card-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background-color: #6b8e23;
+    color: #ffffff;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    z-index: 10;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Corps de la carte */
+.produit_vedete .articles .carousel .produit-content,
+.produit_vedetes .articles .carousel .produit-content,
+.carousel11 .carousel .produit-content {
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    gap: 10px;
+}
+
+/* Nom du produit */
+.produit_vedete .articles .carousel #nom,
+.produit_vedetes .articles .carousel #nom,
+.carousel11 .carousel #nom {
+    font-size: 16px;
+    font-weight: 700;
+    color: #000000;
+    margin: 0;
+    padding: 0;
+    line-height: 1.4;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+/* Catégorie/Marque */
+.produit_vedete .articles .carousel #ville,
+.produit_vedetes .articles .carousel #ville,
+.carousel11 .carousel #ville {
+    font-size: 12px;
+    color: #918a44;
+    margin: 0;
+    padding: 0;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+/* Prix */
+.produit_vedete .articles .carousel .prix,
+.produit_vedetes .articles .carousel .prix,
+.carousel11 .carousel .prix {
+    font-size: 14px;
+    font-weight: 700;
+    color: #000000;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.produit_vedete .articles .carousel .prix .span1,
+.produit_vedetes .articles .carousel .prix .span1,
+.carousel11 .carousel .prix .span1 {
+    font-size: 13px;
+    color: #737373;
+    font-weight: 400;
+}
+
+/* Prix original barré (promotion) */
+.produit_vedete .articles .carousel .prix .span2,
+.produit_vedetes .articles .carousel .prix .span2,
+.carousel11 .carousel .prix .span2 {
+    font-size: 14px;
+    color: #737373;
+    text-decoration: line-through;
+    font-weight: 400;
+}
+
+/* Prix promotionnel */
+.produit_vedete .articles .carousel .prix .prix-promo,
+.produit_vedetes .articles .carousel .prix .prix-promo,
+.carousel11 .carousel .prix .prix-promo {
+    font-size: 14px;
+    color: #c26638;
+    font-weight: 700;
+}
+
+/* Badge pourcentage promo */
+.produit_vedete .articles .carousel .prix .span3,
+.produit_vedetes .articles .carousel .prix .span3,
+.carousel11 .carousel .prix .span3 {
+    font-size: 12px;
+    background-color: #c26638;
+    color: #ffffff;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+/* Informations stock */
+.produit-card-stock-info {
+    font-size: 13px;
+    color: #484848;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.produit-card-stock-info strong {
+    color: #6b2f20;
+    font-weight: 600;
+}
+
+/* Bouton d'action */
+.produit_vedete .articles .carousel a,
+.produit_vedetes .articles .carousel a,
+.carousel11 .carousel a {
+    width: calc(100% - 36px);
+    margin: 0 18px 18px 18px;
+    padding: 7px 10px;
+    background-color: #6b2f20;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 8px;
+    text-align: center;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    position: relative;
+    bottom: 0;
+    left: 0;
+    transform: none;
+}
+
+.produit_vedete .articles .carousel a:hover,
+.produit_vedetes .articles .carousel a:hover,
+.carousel11 .carousel a:hover {
+    background-color: #6b2f20;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(107, 47, 32, 0.3);
+}
+
+.produit_vedete .articles .carousel a i,
+.produit_vedetes .articles .carousel a i,
+.carousel11 .carousel a i {
+    font-size: 14px;
+}
+
+/* Responsive Design */
+@media (max-width: 1400px) {
+    .produits-container,
+    .produit_vedete .articles,
+    .produit_vedetes .articles,
+    .carousel11 {
+        gap: 25px;
+        padding: 20px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .produits-container,
+    .produit_vedete .articles,
+    .produit_vedetes .articles,
+    .carousel11 {
+        gap: 20px;
+        padding: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    .produits-container,
+    .produit_vedete .articles,
+    .produit_vedetes .articles,
+    .carousel11 {
+        gap: 20px;
+        padding: 15px;
+        justify-content: center;
+    }
+
+
+}
+
+@media (max-width: 480px) {
+    .produits-container,
+    .produit_vedete .articles,
+    .produit_vedetes .articles,
+    .carousel11 {
+        gap: 15px;
+        padding: 10px;
+        justify-content: center;
+    }
+
+
+}
+
+/* Styles pour les sections de produits */
+.produit_vedete,
+.produit_vedetes {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-top: 30px;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+.produit_vedete .articles,
+.produit_vedetes .articles {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* Support pour les carrousels Owl Carousel */
+.owl-carousel .owl-stage {
+    display: flex;
+    align-items: flex-start;
+}
+
+.owl-carousel .owl-item {
+    display: flex;
+    justify-content: center;
+}
+
+/* Responsive pour les sections */
+@media (max-width: 1024px) {
+    .produit_vedete,
+    .produit_vedetes {
+        padding: 0 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    .produit_vedete,
+    .produit_vedetes {
+        padding: 0 15px;
+    }
+
+    .produit_vedete .box1,
+    .produit_vedetes .box1 {
+        flex-wrap: wrap;
+        text-align: center;
+    }
+
+    .produit_vedete h1,
+    .produit_vedetes h1 {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .produit_vedete,
+    .produit_vedetes {
+        padding: 0 10px;
+        margin-top: 20px;
+    }
+
+    .produit_vedete h1,
+    .produit_vedetes h1 {
+        font-size: 18px;
+    }
+}
+

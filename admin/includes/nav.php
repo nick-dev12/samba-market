@@ -69,6 +69,10 @@ $current_page = basename($_SERVER['PHP_SELF']);
                 <i class="fas fa-cog"></i>
                 <span>Paramètres</span>
             </a>
+            <a href="<?php echo $base_path; ?>profil.php" class="menu-item <?php echo $current_page == 'profil.php' ? 'active' : ''; ?>">
+                <i class="fas fa-user-shield"></i>
+                <span>Mon profil</span>
+            </a>
             <a href="<?php echo $base_path; ?>logout.php" class="menu-item">
                 <i class="fas fa-sign-out-alt"></i>
                 <span>Déconnexion</span>

@@ -8,7 +8,7 @@ session_start();
 
 // Si l'utilisateur est déjà connecté, rediriger vers le tableau de bord
 if (isset($_SESSION['user_id']) && isset($_SESSION['user_email'])) {
-    header('Location: mon-compte.php');
+    header('Location: /index.php');
     exit;
 }
 
@@ -25,7 +25,7 @@ if (isset($result['success']) && $result['success'] && $result['user']) {
     $_SESSION['user_telephone'] = $result['user']['telephone'];
     $_SESSION['user_statut'] = $result['user']['statut'];
     
-    header('Location: mon-compte.php');
+    header('Location: /index.php');
     exit;
 }
 

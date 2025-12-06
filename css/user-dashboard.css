@@ -433,8 +433,5 @@ body {
         grid-template-columns: 1fr;
     }
 
-    .produit-card {
-        max-height: 240px;
-    }
 }
 

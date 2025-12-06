@@ -154,6 +154,7 @@ if (isset($result['success']) && $result['success']) {
         <?php endif; ?>
 
         <form method="POST" action="" enctype="multipart/form-data" class="form-container">
+            <input type="hidden" name="MAX_FILE_SIZE" value="52428800">
             <div class="form-group">
                 <label for="titre">Titre *</label>
                 <input type="text" id="titre" name="titre" required
@@ -171,7 +172,7 @@ if (isset($result['success']) && $result['success']) {
                 <label for="image">Image *</label>
                 <input type="file" id="image" name="image" accept="image/*" required>
                 <small style="color: #666; font-size: 12px; display: block; margin-top: 5px;">
-                    Formats acceptés: JPG, PNG, WEBP, AVIF (Max: 5MB)
+                    Formats acceptés: JPEG, JPG, PNG, GIF, WEBP, AVIF (Max: 50MB - Images 4K acceptées)
                 </small>
             </div>
 

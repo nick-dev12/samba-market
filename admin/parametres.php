@@ -120,45 +120,45 @@ if (isset($_SESSION['success_message'])) {
         <?php endif; ?>
 
         <div class="parametres-grid">
-            <!-- Section4 -->
+            <!-- Bannière d'Accueil -->
             <div class="parametre-card">
                 <div class="parametre-icon">
-                    <i class="fas fa-image"></i>
+                    <i class="fas fa-home"></i>
                 </div>
-                <h3 class="parametre-title">Section4</h3>
+                <h3 class="parametre-title">Bannière d'Accueil</h3>
                 <p class="parametre-description">
-                    Configurez le titre, le texte et l'image de fond de la section d'accueil principale.
+                    Personnalisez la bannière principale de votre page d'accueil : modifiez le titre, le texte d'accroche et l'image de fond pour créer une première impression mémorable.
                 </p>
                 <a href="parametres/section4.php" class="parametre-link">
-                    <i class="fas fa-edit"></i> Configurer
+                    <i class="fas fa-edit"></i> Modifier la bannière
                 </a>
             </div>
 
-            <!-- Section Trending -->
+            <!-- Section Tendance -->
             <div class="parametre-card">
                 <div class="parametre-icon">
-                    <i class="fas fa-fire"></i>
+                    <i class="fas fa-star"></i>
                 </div>
-                <h3 class="parametre-title">Section Trending</h3>
+                <h3 class="parametre-title">Section Mise en Avant</h3>
                 <p class="parametre-description">
-                    Configurez le label, le titre, le bouton et l'image de la section trending.
+                    Configurez la section de mise en avant des produits : définissez le label, le titre promotionnel, le texte du bouton d'action et l'image illustrative.
                 </p>
                 <a href="parametres/trending.php" class="parametre-link">
-                    <i class="fas fa-edit"></i> Configurer
+                    <i class="fas fa-edit"></i> Modifier la section
                 </a>
             </div>
 
-            <!-- Slider (lien vers la gestion existante) -->
+            <!-- Carrousel Principal -->
             <div class="parametre-card">
                 <div class="parametre-icon">
-                    <i class="fas fa-images"></i>
+                    <i class="fas fa-sliders-h"></i>
                 </div>
-                <h3 class="parametre-title">Slider Principal</h3>
+                <h3 class="parametre-title">Carrousel Principal</h3>
                 <p class="parametre-description">
-                    Gérez les slides du carrousel principal de la page d'accueil.
+                    Gérez le carrousel d'images en haut de la page d'accueil : ajoutez, modifiez ou supprimez les slides avec leurs titres, textes et boutons d'action.
                 </p>
                 <a href="slider/index.php" class="parametre-link">
-                    <i class="fas fa-edit"></i> Configurer
+                    <i class="fas fa-edit"></i> Gérer le carrousel
                 </a>
             </div>
         </div>

@@ -23,14 +23,14 @@ $result = null;
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     require_once __DIR__ . '/../../controllers/controller_section4.php';
     $result = process_update_section4();
-    
+
     // Si la modification est réussie, rediriger
     if (isset($result['success']) && $result['success']) {
         $_SESSION['success_message'] = $result['message'];
         header('Location: ../parametres.php');
         exit;
     }
-    
+
     // Afficher les messages d'erreur
     if (isset($result['success']) && !$result['success']) {
         $error_message = $result['message'];
@@ -46,6 +46,7 @@ if (isset($_SESSION['success_message'])) {
 ?>
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -187,6 +188,7 @@ if (isset($_SESSION['success_message'])) {
         }
     </style>
 </head>
+
 <body>
     <?php include '../includes/nav.php'; ?>
 
@@ -199,37 +201,38 @@ if (isset($_SESSION['success_message'])) {
         </div>
 
         <?php if (!empty($success_message)): ?>
-            <div style="background: #d1e7dd; border-left: 4px solid #0f5132; color: #0f5132; padding: 12px 15px; border-radius: 6px; margin-bottom: 20px; font-size: 14px;">
+            <div
+                style="background: #d1e7dd; border-left: 4px solid #0f5132; color: #0f5132; padding: 12px 15px; border-radius: 6px; margin-bottom: 20px; font-size: 14px;">
                 <i class="fas fa-check-circle"></i> <?php echo htmlspecialchars($success_message); ?>
             </div>
         <?php endif; ?>
 
         <?php if (!empty($error_message)): ?>
-            <div style="background: #f8d7da; border-left: 4px solid #842029; color: #842029; padding: 12px 15px; border-radius: 6px; margin-bottom: 20px; font-size: 14px;">
+            <div
+                style="background: #f8d7da; border-left: 4px solid #842029; color: #842029; padding: 12px 15px; border-radius: 6px; margin-bottom: 20px; font-size: 14px;">
                 <i class="fas fa-exclamation-circle"></i> <?php echo htmlspecialchars($error_message); ?>
             </div>
         <?php endif; ?>
 
         <div class="form-container">
             <form method="POST" action="" enctype="multipart/form-data">
+                <input type="hidden" name="MAX_FILE_SIZE" value="52428800">
                 <div class="form-group">
                     <label for="titre">
                         <i class="fas fa-heading"></i> Titre principal
                     </label>
-                    <input type="text" id="titre" name="titre" 
-                           value="<?php echo isset($_POST['titre']) ? htmlspecialchars($_POST['titre']) : htmlspecialchars($config['titre']); ?>" 
-                           required
-                           placeholder="Ex: Bienvenue au Tresor Africain">
+                    <input type="text" id="titre" name="titre"
+                        value="<?php echo isset($_POST['titre']) ? htmlspecialchars($_POST['titre']) : htmlspecialchars($config['titre']); ?>"
+                        required placeholder="Ex: Bienvenue au Tresor Africain">
                 </div>
 
                 <div class="form-group">
                     <label for="texte">
                         <i class="fas fa-text-width"></i> Texte secondaire
                     </label>
-                    <input type="text" id="texte" name="texte" 
-                           value="<?php echo isset($_POST['texte']) ? htmlspecialchars($_POST['texte']) : htmlspecialchars($config['texte']); ?>" 
-                           required
-                           placeholder="Ex: Tous les produits a petit prix">
+                    <input type="text" id="texte" name="texte"
+                        value="<?php echo isset($_POST['texte']) ? htmlspecialchars($_POST['texte']) : htmlspecialchars($config['texte']); ?>"
+                        required placeholder="Ex: Tous les produits a petit prix">
                 </div>
 
                 <div class="form-group">
@@ -237,15 +240,15 @@ if (isset($_SESSION['success_message'])) {
                         <i class="fas fa-image"></i> Image de fond
                     </label>
                     <small style="display: block; color: #666; font-size: 12px; margin-bottom: 8px;">
-                        Formats acceptés: JPG, PNG, GIF, WEBP (max 5MB)
+                        Formats acceptés: JPEG, JPG, PNG, GIF, WEBP (max 50MB - Images 4K acceptées)
                     </small>
-                    
+
                     <?php if (!empty($config['image_fond'])): ?>
                         <div class="current-image">
                             <strong>Image actuelle:</strong>
-                            <img src="../../upload/section4/<?php echo htmlspecialchars($config['image_fond']); ?>" 
-                                 alt="Image de fond actuelle"
-                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                            <img src="../../upload/section4/<?php echo htmlspecialchars($config['image_fond']); ?>"
+                                alt="Image de fond actuelle"
+                                onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                             <p style="display: none; color: #666; margin-top: 10px;">
                                 <i class="fas fa-info-circle"></i> Image non trouvée
                             </p>
@@ -257,7 +260,8 @@ if (isset($_SESSION['success_message'])) {
                             <i class="fas fa-upload"></i>
                             <span><?php echo !empty($config['image_fond']) ? 'Changer l\'image' : 'Choisir une image'; ?></span>
                         </label>
-                        <input type="file" id="image_fond" name="image_fond" accept="image/jpeg,image/jpg,image/png,image/gif,image/webp">
+                        <input type="file" id="image_fond" name="image_fond"
+                            accept="image/jpeg,image/jpg,image/png,image/gif,image/webp">
                     </div>
                     <div id="imagePreview" style="display: none; margin-top: 15px;">
                         <img src="" alt="Aperçu" class="image-preview" id="previewImg">
@@ -280,11 +284,11 @@ if (isset($_SESSION['success_message'])) {
 
     <script>
         // Aperçu de l'image avant upload
-        document.getElementById('image_fond').addEventListener('change', function(e) {
+        document.getElementById('image_fond').addEventListener('change', function (e) {
             const file = e.target.files[0];
             if (file) {
                 const reader = new FileReader();
-                reader.onload = function(e) {
+                reader.onload = function (e) {
                     document.getElementById('previewImg').src = e.target.result;
                     document.getElementById('imagePreview').style.display = 'block';
                 };
@@ -295,5 +299,5 @@ if (isset($_SESSION['success_message'])) {
         });
     </script>
 </body>
-</html>
 
+</html>

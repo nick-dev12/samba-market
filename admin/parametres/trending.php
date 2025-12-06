@@ -210,6 +210,7 @@ if (isset($_SESSION['success_message'])) {
 
         <div class="form-container">
             <form method="POST" action="" enctype="multipart/form-data">
+                <input type="hidden" name="MAX_FILE_SIZE" value="52428800">
                 <div class="form-group">
                     <label for="label">
                         <i class="fas fa-tag"></i> Label (petit texte)
@@ -254,7 +255,7 @@ if (isset($_SESSION['success_message'])) {
                         <i class="fas fa-image"></i> Image
                     </label>
                     <small style="display: block; color: #666; font-size: 12px; margin-bottom: 8px;">
-                        Formats acceptés: JPG, PNG, GIF, WEBP (max 5MB)
+                        Formats acceptés: JPEG, JPG, PNG, GIF, WEBP (max 50MB - Images 4K acceptées)
                     </small>
                     
                     <?php if (!empty($config['image'])): ?>

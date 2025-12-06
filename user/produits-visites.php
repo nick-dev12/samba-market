@@ -30,9 +30,10 @@ $produits_visites = get_produits_visites_by_user($_SESSION['user_id'], 50);
         display: flex;
         flex-wrap: wrap;
         gap: 20px;
-        justify-content: flex-start;
+        justify-content: center;
         align-items: flex-start;
         margin-top: 20px;
+        width: 100%;
     }
 
     .produit-card {
@@ -40,7 +41,8 @@ $produits_visites = get_produits_visites_by_user($_SESSION['user_id'], 50);
         border: 1px solid #f0e9e9;
         border-radius: 12px;
         overflow: visible;
-        width: 280px;
+        width: 300px;
+        min-width: 300px;
         max-width: 300px;
         transition: all 0.3s ease;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
@@ -51,15 +53,17 @@ $produits_visites = get_produits_visites_by_user($_SESSION['user_id'], 50);
 
     @media (max-width: 768px) {
         .produit-card {
-            width: calc(50% - 10px);
-            min-width: 250px;
+            width: 300px;
+            min-width: 300px;
+            max-width: 300px;
         }
     }
 
     @media (max-width: 480px) {
         .produit-card {
-            width: 100%;
-            max-width: 100%;
+            width: 300px;
+            min-width: 300px;
+            max-width: 300px;
         }
     }
 

@@ -102,6 +102,56 @@ function get_admin_by_email($email)
 }
 
 /**
+ * Récupère un administrateur par son ID
+ * @param int $id L'ID de l'administrateur
+ * @return array|false Les données de l'admin ou False si non trouvé
+ */
+function get_admin_by_id($id)
+{
+    global $db;
+
+    try {
+        $stmt = $db->prepare("SELECT * FROM admin WHERE id = :id");
+        $stmt->execute(['id' => $id]);
+        $admin = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $admin ? $admin : false;
+    } catch (PDOException $e) {
+        return false;
+    }
+}
+
+/**
+ * Met à jour les informations d'un administrateur
+ * @param int $id L'ID de l'administrateur
+ * @param array $data Les nouvelles données
+ * @return bool True en cas de succès, False sinon
+ */
+function update_admin($id, $data)
+{
+    global $db;
+
+    try {
+        $stmt = $db->prepare("
+            UPDATE admin SET
+                nom = :nom,
+                prenom = :prenom,
+                email = :email
+            WHERE id = :id
+        ");
+
+        return $stmt->execute([
+            'id' => $id,
+            'nom' => $data['nom'],
+            'prenom' => $data['prenom'],
+            'email' => $data['email']
+        ]);
+    } catch (PDOException $e) {
+        return false;
+    }
+}
+
+/**
  * Met à jour la dernière connexion d'un administrateur
  * @param int $admin_id L'ID de l'administrateur
  * @return bool True en cas de succès, False sinon
