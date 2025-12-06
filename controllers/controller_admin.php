@@ -20,14 +20,6 @@ function process_admin_inscription() {
         return ['success' => false, 'message' => ''];
     }
     
-    // Vérifier si un administrateur existe déjà
-    if (admin_exists()) {
-        return [
-            'success' => false, 
-            'message' => 'Un administrateur existe déjà. Veuillez vous connecter.'
-        ];
-    }
-    
     // Récupération et validation des données
     $nom = isset($_POST['nom']) ? trim($_POST['nom']) : '';
     $prenom = isset($_POST['prenom']) ? trim($_POST['prenom']) : '';

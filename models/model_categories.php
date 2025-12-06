@@ -11,14 +11,15 @@ require_once __DIR__ . '/../conn/conn.php';
  * Récupère toutes les catégories actives
  * @return array|false Tableau des catégories ou False en cas d'erreur
  */
-function get_all_categories() {
+function get_all_categories()
+{
     global $db;
-    
+
     try {
         $stmt = $db->prepare("SELECT * FROM categories ORDER BY nom ASC");
         $stmt->execute();
         $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
+
         return $categories ? $categories : [];
     } catch (PDOException $e) {
         return [];
@@ -30,14 +31,15 @@ function get_all_categories() {
  * @param int $id L'ID de la catégorie
  * @return array|false Les données de la catégorie ou False si non trouvée
  */
-function get_categorie_by_id($id) {
+function get_categorie_by_id($id)
+{
     global $db;
-    
+
     try {
         $stmt = $db->prepare("SELECT * FROM categories WHERE id = :id");
         $stmt->execute(['id' => $id]);
         $categorie = $stmt->fetch(PDO::FETCH_ASSOC);
-        
+
         return $categorie ? $categorie : false;
     } catch (PDOException $e) {
         return false;
@@ -49,14 +51,15 @@ function get_categorie_by_id($id) {
  * @param string $nom Le nom de la catégorie
  * @return array|false Les données de la catégorie ou False si non trouvée
  */
-function get_categorie_by_nom($nom) {
+function get_categorie_by_nom($nom)
+{
     global $db;
-    
+
     try {
         $stmt = $db->prepare("SELECT * FROM categories WHERE nom = :nom");
         $stmt->execute(['nom' => $nom]);
         $categorie = $stmt->fetch(PDO::FETCH_ASSOC);
-        
+
         return $categorie ? $categorie : false;
     } catch (PDOException $e) {
         return false;
@@ -70,25 +73,26 @@ function get_categorie_by_nom($nom) {
  * @param string|null $image Le chemin de l'image
  * @return int|false L'ID de la catégorie créée ou False en cas d'erreur
  */
-function create_categorie($nom, $description = null, $image = null) {
+function create_categorie($nom, $description = null, $image = null)
+{
     global $db;
-    
+
     try {
         $stmt = $db->prepare("
             INSERT INTO categories (nom, description, image, date_creation) 
             VALUES (:nom, :description, :image, NOW())
         ");
-        
+
         $result = $stmt->execute([
             'nom' => $nom,
             'description' => $description,
             'image' => $image
         ]);
-        
+
         if ($result) {
             return $db->lastInsertId();
         }
-        
+
         return false;
     } catch (PDOException $e) {
         return false;
@@ -103,9 +107,10 @@ function create_categorie($nom, $description = null, $image = null) {
  * @param string|null $image Le chemin de l'image
  * @return bool True en cas de succès, False sinon
  */
-function update_categorie($id, $nom, $description = null, $image = null) {
+function update_categorie($id, $nom, $description = null, $image = null)
+{
     global $db;
-    
+
     try {
         $stmt = $db->prepare("
             UPDATE categories SET
@@ -114,7 +119,7 @@ function update_categorie($id, $nom, $description = null, $image = null) {
                 image = :image
             WHERE id = :id
         ");
-        
+
         return $stmt->execute([
             'id' => $id,
             'nom' => $nom,
@@ -131,9 +136,10 @@ function update_categorie($id, $nom, $description = null, $image = null) {
  * @param int $id L'ID de la catégorie
  * @return bool True en cas de succès, False sinon
  */
-function delete_categorie($id) {
+function delete_categorie($id)
+{
     global $db;
-    
+
     try {
         $stmt = $db->prepare("DELETE FROM categories WHERE id = :id");
         return $stmt->execute(['id' => $id]);
@@ -147,14 +153,15 @@ function delete_categorie($id) {
  * @param int $categorie_id L'ID de la catégorie
  * @return bool True si la catégorie a des produits, False sinon
  */
-function categorie_has_produits($categorie_id) {
+function categorie_has_produits($categorie_id)
+{
     global $db;
-    
+
     try {
         $stmt = $db->prepare("SELECT COUNT(*) FROM produits WHERE categorie_id = :id");
         $stmt->execute(['id' => $categorie_id]);
         $count = $stmt->fetchColumn();
-        
+
         return $count > 0;
     } catch (PDOException $e) {
         return false;
@@ -165,9 +172,10 @@ function categorie_has_produits($categorie_id) {
  * Récupère toutes les catégories avec le nombre de produits
  * @return array Tableau des catégories avec le nombre de produits
  */
-function get_all_categories_with_count() {
+function get_all_categories_with_count()
+{
     global $db;
-    
+
     try {
         $stmt = $db->prepare("
             SELECT c.*, COUNT(p.id) as nb_produits
@@ -178,7 +186,7 @@ function get_all_categories_with_count() {
         ");
         $stmt->execute();
         $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
+
         return $categories ? $categories : [];
     } catch (PDOException $e) {
         return [];
@@ -190,9 +198,10 @@ function get_all_categories_with_count() {
  * @param int $limit Nombre maximum de catégories à retourner (par défaut 5)
  * @return array Tableau des catégories les plus populaires mélangées aléatoirement
  */
-function get_top_categories($limit = 5) {
+function get_top_categories($limit = 5)
+{
     global $db;
-    
+
     try {
         // Récupérer les catégories avec le nombre de visites et de commandes
         $stmt = $db->prepare("
@@ -220,30 +229,30 @@ function get_top_categories($limit = 5) {
             ORDER BY score_popularite DESC, c.nom ASC
             LIMIT :limit
         ");
-        
+
         $stmt->bindValue(':limit', $limit * 2, PDO::PARAM_INT); // Récupérer plus pour avoir de la variété
         $stmt->execute();
         $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
+
         // Si aucune catégorie avec visites/commandes, récupérer toutes les catégories
         if (empty($categories)) {
             $categories = get_all_categories();
         }
-        
+
         // Mélanger aléatoirement les catégories
         if (!empty($categories)) {
-            mt_srand(time() + (int)(microtime(true) * 1000000));
+            mt_srand(time() + (int) (microtime(true) * 1000000));
             shuffle($categories);
             // Limiter au nombre demandé
             $categories = array_slice($categories, 0, $limit);
         }
-        
+
         return $categories ? $categories : [];
     } catch (PDOException $e) {
         // En cas d'erreur, retourner toutes les catégories mélangées
         $categories = get_all_categories();
         if (!empty($categories)) {
-            mt_srand(time() + (int)(microtime(true) * 1000000));
+            mt_srand(time() + (int) (microtime(true) * 1000000));
             shuffle($categories);
             $categories = array_slice($categories, 0, $limit);
         }
@@ -252,4 +261,3 @@ function get_top_categories($limit = 5) {
 }
 
 ?>
-

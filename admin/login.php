@@ -165,6 +165,42 @@ if (isset($_SESSION['inscription_success'])) {
             font-size: 16px;
         }
 
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #918a44;
+            font-size: 16px;
+            cursor: pointer;
+            padding: 0;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            transition: color 0.3s ease;
+        }
+
+        .password-toggle:hover {
+            color: #6b2f20;
+        }
+
+        .input-wrapper.password-wrapper {
+            position: relative;
+        }
+
+        .input-wrapper.password-wrapper input {
+            padding-right: 45px;
+        }
+
+        .input-wrapper.password-wrapper .password-toggle {
+            right: 15px;
+        }
+
         .error-message {
             background: #fee;
             border-left: 4px solid #c26638;
@@ -297,9 +333,11 @@ if (isset($_SESSION['inscription_success'])) {
 
             <div class="form-group">
                 <label for="password"><i class="fas fa-lock"></i> Mot de passe *</label>
-                <div class="input-wrapper">
+                <div class="input-wrapper password-wrapper">
                     <input type="password" id="password" name="password" placeholder="Votre mot de passe" required>
-                    <i class="fas fa-lock"></i>
+                    <button type="button" class="password-toggle" onclick="togglePassword('password', this)">
+                        <i class="fas fa-eye"></i>
+                    </button>
                 </div>
             </div>
 
@@ -312,6 +350,23 @@ if (isset($_SESSION['inscription_success'])) {
             <p>Vous n'avez pas de compte ? <a href="inscription-admin.php">Créer un compte</a></p>
         </div>
     </div>
+
+    <script>
+        function togglePassword(inputId, button) {
+            const input = document.getElementById(inputId);
+            const icon = button.querySelector('i');
+
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+    </script>
 </body>
 
 </html>

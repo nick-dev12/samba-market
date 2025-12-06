@@ -258,6 +258,7 @@ nav .containernav .users img {
   flex-wrap: wrap;
   padding: 8px 15px;
   gap: 10px;
+  transition: height 0.4s ease;
 }
 
 @media (max-width: 768px) {
@@ -273,6 +274,54 @@ nav .containernav .users img {
 
   .section1 div span i {
     font-size: 24px;
+  }
+  
+  /* Cacher les catégories au-delà de la 3ème en responsive avec transition */
+  .section1 .category-link.category-hidden {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    transform: translateY(-10px);
+    transition: max-height 0.4s ease-out, opacity 0.4s ease-out, margin 0.4s ease-out, padding 0.4s ease-out, transform 0.4s ease-out;
+  }
+  
+  /* Afficher toutes les catégories quand on clique sur le bouton */
+  .section1.show-all-categories .category-link.category-hidden {
+    max-height: 100px;
+    opacity: 1;
+    margin: 5px;
+    padding: 0;
+    transform: translateY(0);
+    transition: max-height 0.5s ease-in, opacity 0.5s ease-in 0.1s, margin 0.4s ease-in, padding 0.4s ease-in, transform 0.5s ease-in 0.1s;
+  }
+  
+  /* Style pour le bouton toggle avec animation */
+  .section1 div span.toggle-categories-btn {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    user-select: none;
+    display: inline-block;
+  }
+  
+  .section1 div span.toggle-categories-btn:hover {
+    opacity: 0.8;
+    transform: scale(1.1);
+  }
+  
+  .section1 div span.toggle-categories-btn:active {
+    opacity: 0.6;
+    transform: scale(0.95);
+  }
+  
+  /* Animation pour l'icône */
+  .section1 div span.toggle-categories-btn i {
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+  
+  .section1.show-all-categories div span.toggle-categories-btn i {
+    transform: rotate(90deg);
   }
 
   nav {
@@ -319,6 +368,12 @@ nav .containernav .users img {
   margin-left: 20px;
   text-transform: capitalize;
   font-family: "Nunito", sans-serif;
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.section1 a:hover {
+  color: #918a44;
+  transform: translateY(-2px);
 }
 
 .section1 div span i {

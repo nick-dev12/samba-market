@@ -198,7 +198,6 @@ nav .box {
         <div class="users">
 
             <div class="box">
-                <a href="#"><button>boutique</button></a>
                 <a class="dconn" href="/conn/dconn.php">deconnection</a>
             </div>
             <a href="/view/profil_commercent.php">
@@ -245,8 +244,7 @@ nav .box {
         <!-- Utilisateur non connecté -->
         <div class="box">
             <a href="/user/connexion.php"><button>Connexion</button></a>
-            <a href="/user/inscription.php"><button>Inscription</button></a>
-            <a href="#"><button>boutique</button></a>
+
         </div>
         <?php endif ?>
     </div>
@@ -263,16 +261,41 @@ if (file_exists(__DIR__ . '/models/model_categories.php')) {
 
 <section class="section1">
     <div>
-        <span><i class="fa-solid fa-bars"></i></span>
+        <span class="toggle-categories-btn" style="cursor: pointer;"><i class="fa-solid fa-bars"></i></span>
     </div>
     <?php if (!empty($categories_menu)): ?>
-    <?php foreach ($categories_menu as $categorie): ?>
-    <a href="categorie.php?id=<?php echo $categorie['id']; ?>">
+    <?php foreach ($categories_menu as $index => $categorie): ?>
+    <a href="categorie.php?id=<?php echo $categorie['id']; ?>"
+        class="category-link <?php echo $index >= 3 ? 'category-hidden' : ''; ?>">
         <?php echo htmlspecialchars($categorie['nom']); ?>
     </a>
     <?php endforeach; ?>
     <?php else: ?>
     <!-- Fallback si aucune catégorie n'est disponible -->
-    <a href="produits.php">Tous les produits</a>
+    <a href="produits.php" class="category-link">Tous les produits</a>
     <?php endif; ?>
 </section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleBtn = document.querySelector('.toggle-categories-btn');
+    const hiddenCategories = document.querySelectorAll('.category-hidden');
+
+    if (toggleBtn && hiddenCategories.length > 0) {
+        toggleBtn.addEventListener('click', function() {
+            const section1 = document.querySelector('.section1');
+            section1.classList.toggle('show-all-categories');
+
+            // Changer l'icône
+            const icon = this.querySelector('i');
+            if (section1.classList.contains('show-all-categories')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+    }
+});
+</script>

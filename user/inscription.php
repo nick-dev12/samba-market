@@ -25,6 +25,7 @@ if (isset($result['success']) && $result['success']) {
 ?>
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -145,6 +146,42 @@ if (isset($result['success']) && $result['success']) {
             font-size: 16px;
         }
 
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #918a44;
+            font-size: 16px;
+            cursor: pointer;
+            padding: 0;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            transition: color 0.3s ease;
+        }
+
+        .password-toggle:hover {
+            color: #6b2f20;
+        }
+
+        .input-wrapper.password-wrapper {
+            position: relative;
+        }
+
+        .input-wrapper.password-wrapper input {
+            padding-right: 45px;
+        }
+
+        .input-wrapper.password-wrapper .password-toggle {
+            right: 15px;
+        }
+
         .error-message {
             background: #fee;
             border-left: 4px solid #c26638;
@@ -204,6 +241,7 @@ if (isset($result['success']) && $result['success']) {
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="header">
@@ -223,21 +261,21 @@ if (isset($result['success']) && $result['success']) {
         <form method="POST" action="" id="inscriptionForm">
             <div class="form-group">
                 <label for="nom"><i class="fas fa-user"></i> Nom *</label>
-                <input type="text" id="nom" name="nom" placeholder="Votre nom" required 
-                       value="<?php echo isset($_POST['nom']) ? htmlspecialchars($_POST['nom']) : ''; ?>">
+                <input type="text" id="nom" name="nom" placeholder="Votre nom" required
+                    value="<?php echo isset($_POST['nom']) ? htmlspecialchars($_POST['nom']) : ''; ?>">
             </div>
 
             <div class="form-group">
                 <label for="prenom"><i class="fas fa-user"></i> Prénom *</label>
                 <input type="text" id="prenom" name="prenom" placeholder="Votre prénom" required
-                       value="<?php echo isset($_POST['prenom']) ? htmlspecialchars($_POST['prenom']) : ''; ?>">
+                    value="<?php echo isset($_POST['prenom']) ? htmlspecialchars($_POST['prenom']) : ''; ?>">
             </div>
 
             <div class="form-group">
                 <label for="email"><i class="fas fa-envelope"></i> Email *</label>
                 <div class="input-wrapper">
                     <input type="email" id="email" name="email" placeholder="votre@email.com" required
-                           value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ''; ?>">
+                        value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ''; ?>">
                     <i class="fas fa-envelope"></i>
                 </div>
             </div>
@@ -246,24 +284,29 @@ if (isset($result['success']) && $result['success']) {
                 <label for="telephone"><i class="fas fa-phone"></i> Téléphone *</label>
                 <div class="input-wrapper">
                     <input type="tel" id="telephone" name="telephone" placeholder="+241 01 23 45 67" required
-                           value="<?php echo isset($_POST['telephone']) ? htmlspecialchars($_POST['telephone']) : ''; ?>">
+                        value="<?php echo isset($_POST['telephone']) ? htmlspecialchars($_POST['telephone']) : ''; ?>">
                     <i class="fas fa-phone"></i>
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="password"><i class="fas fa-lock"></i> Mot de passe *</label>
-                <div class="input-wrapper">
+                <div class="input-wrapper password-wrapper">
                     <input type="password" id="password" name="password" placeholder="Votre mot de passe" required>
-                    <i class="fas fa-lock"></i>
+                    <button type="button" class="password-toggle" onclick="togglePassword('password', this)">
+                        <i class="fas fa-eye"></i>
+                    </button>
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="password_confirm"><i class="fas fa-lock"></i> Confirmer le mot de passe *</label>
-                <div class="input-wrapper">
-                    <input type="password" id="password_confirm" name="password_confirm" placeholder="Confirmez votre mot de passe" required>
-                    <i class="fas fa-lock"></i>
+                <div class="input-wrapper password-wrapper">
+                    <input type="password" id="password_confirm" name="password_confirm"
+                        placeholder="Confirmez votre mot de passe" required>
+                    <button type="button" class="password-toggle" onclick="togglePassword('password_confirm', this)">
+                        <i class="fas fa-eye"></i>
+                    </button>
                 </div>
             </div>
 
@@ -276,6 +319,23 @@ if (isset($result['success']) && $result['success']) {
             <p>Vous avez déjà un compte ? <a href="connexion.php">Se connecter</a></p>
         </div>
     </div>
-</body>
-</html>
 
+    <script>
+        function togglePassword(inputId, button) {
+            const input = document.getElementById(inputId);
+            const icon = button.querySelector('i');
+
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+    </script>
+</body>
+
+</html>
